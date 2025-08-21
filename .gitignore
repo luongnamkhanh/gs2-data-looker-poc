@@ -1,0 +1,8 @@
+# Ignore logs folder
+logs/
+
+# Ignore config folder
+config/
+
+# Ignore environment files
+.env
