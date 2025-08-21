@@ -1,0 +1,7 @@
+airflow-provider-great-expectations
+gspread
+oauth2client
+pandas
+pyyaml
+jsonschema
+jinja2

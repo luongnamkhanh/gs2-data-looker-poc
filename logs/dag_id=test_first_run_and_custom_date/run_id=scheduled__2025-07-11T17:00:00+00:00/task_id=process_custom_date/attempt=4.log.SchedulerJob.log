@@ -1,0 +1,1 @@
+[2025-07-15T04:29:13.491+0000] {scheduler_job_runner.py:769} ERROR - Executor reports task instance <TaskInstance: test_first_run_and_custom_date.process_custom_date scheduled__2025-07-11T17:00:00+00:00 [queued]> finished (failed) although the task says it's queued. (Info: None) Was the task killed externally?
