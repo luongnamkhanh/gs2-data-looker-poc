@@ -21,14 +21,14 @@ jobs:
 
       - name: Install Dependencies
         run: pip install pyyaml jsonschema jinja2
-        
+
+      # --- THIS IS THE NEW, REQUIRED STEP ---
+      # It creates the credential file that your Python scripts will need later.
       - name: Create Google Credentials File from Secret
-        # This step runs only if the secret is available
-        if: ${{ secrets.GCP_CREDENTIALS_JSON }}
         run: |
-          # Create the plugins directory if it doesn't exist
+          # Create the plugins directory if it doesn't exist.
           mkdir -p plugins
-          # Write the content of the secret into the file
+          # Write the content of the secret into the file.
           echo "${{ secrets.GCP_CREDENTIALS_JSON }}" > plugins/google_credentials.json
 
       - name: Find and Validate Changed Config
