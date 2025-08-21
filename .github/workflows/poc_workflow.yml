@@ -1,0 +1,54 @@
+name: Validate Config and Generate DAG for POC
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'gs2_configs/**.yaml'
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: pip install pyyaml jsonschema jinja2
+
+      - name: Find and Validate Changed Config
+        id: find_config
+        run: |
+          CONFIG_FILE=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} -- 'gs2_configs/*.yaml' | head -n 1)
+          if [ -z "$CONFIG_FILE" ]; then
+            echo "No new config file found."
+            exit 0
+          fi
+          echo "Validating $CONFIG_FILE..."
+          python scripts/validate_config.py "$CONFIG_FILE"
+          echo "CONFIG_PATH=$CONFIG_FILE" >> $GITHUB_OUTPUT
+
+      - name: Generate DAG from Config
+        if: steps.find_config.outputs.CONFIG_PATH
+        run: |
+          echo "Generating DAG from ${{ steps.find_config.outputs.CONFIG_PATH }}..."
+          python scripts/generate_dag.py "${{ steps.find_config.outputs.CONFIG_PATH }}"
+
+      - name: Commit Generated DAG
+        if: steps.find_config.outputs.CONFIG_PATH
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add dags/
+          if git diff --staged --quiet; then
+            echo "No new DAG to commit."
+          else
+            git commit -m "auto: Generate DAG for ${{ steps.find_config.outputs.CONFIG_PATH }}"
+            git push
+          fi

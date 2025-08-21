@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GS2 Campaign Configuration Schema",
+  "type": "object",
+  "properties": {
+    "campaign_id": {
+      "type": "string",
+      "description": "Unique identifier for the campaign."
+    },
+    "start_date": {
+      "type": "string",
+      "description": "The start date of the DAG in YYYY-MM-DD format.",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "end_date": {
+      "type": "string",
+      "description": "The end date of the DAG in YYYY-MM-DD format.",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "data_path": {
+      "type": "string",
+      "description": "The full S3 path to the source data.",
+      "pattern": "^s3://[a-zA-Z0-9.-]+/[a-zA-Z0-9./_-]+$"
+    },
+    "ticket_link": {
+      "type": "string",
+      "description": "Full URL to the approved MyTool ticket.",
+      "format": "uri"
+    },
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "nullable": { "type": "boolean" }
+        },
+        "required": ["name", "type", "nullable"]
+      }
+    }
+  },
+  "required": [
+    "campaign_id",
+    "start_date",
+    "data_path",
+    "ticket_link",
+    "schema"
+  ]
+}

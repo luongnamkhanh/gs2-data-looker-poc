@@ -1,8 +1,8 @@
 # Ignore logs folder
-logs/
+logs/*
 
 # Ignore config folder
-config/
+config/*
 
 # Ignore environment files
 .env
