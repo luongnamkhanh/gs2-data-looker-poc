@@ -3,7 +3,7 @@ import gspread
 import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
 
-GCP_KEYFILE_PATH = "/opt/airflow/plugins/google_credentials.json"
+GCP_KEYFILE_PATH = "dags/plugins/google_credentials.json"
 
 def upload_dataframe(csv_path, gsheet_name):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']

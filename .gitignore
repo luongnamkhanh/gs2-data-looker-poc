@@ -9,3 +9,7 @@ config/*
 
 # Ignore local Google Cloud credentials
 plugins/google_credentials.json
+dags/plugins/google_credentials.json
+
+# Ingore __pycache__ folders
+**/__pycache__/
