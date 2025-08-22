@@ -11,8 +11,12 @@ jobs:
   build-and-validate:
     runs-on: ubuntu-latest
     steps:
+      # --- THIS IS THE FIX ---
+      # Add fetch-depth: 0 to get the full git history
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v5
@@ -22,18 +26,11 @@ jobs:
       - name: Install Dependencies
         run: pip install pyyaml jsonschema jinja2
 
-      # --- THIS IS THE NEW, REQUIRED STEP ---
-      # It creates the credential file that your Python scripts will need later.
-      - name: Create Google Credentials File from Secret
-        run: |
-          # Create the plugins directory if it doesn't exist.
-          mkdir -p plugins
-          # Write the content of the secret into the file.
-          echo "${{ secrets.GCP_CREDENTIALS_JSON }}" > plugins/google_credentials.json
-
+      # The rest of your steps are correct and do not need to change
       - name: Find and Validate Changed Config
         id: find_config
         run: |
+          # This command will now work correctly
           CONFIG_FILE=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} -- 'gs2_configs/*.yaml' | head -n 1)
           if [ -z "$CONFIG_FILE" ]; then
             echo "No new config file found."
