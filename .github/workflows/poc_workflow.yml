@@ -10,6 +10,9 @@ on:
 jobs:
   build-and-validate:
     runs-on: ubuntu-latest
+    # Grant the GITHUB_TOKEN write permission for this job
+    permissions:
+      contents: write
     steps:
       # --- THIS IS THE FIX ---
       # Add fetch-depth: 0 to get the full git history
