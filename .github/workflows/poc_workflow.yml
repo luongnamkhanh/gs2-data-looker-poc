@@ -52,8 +52,15 @@ jobs:
       - name: Commit Generated DAG
         if: steps.find_config.outputs.CONFIG_PATH
         run: |
+          # Configure Git for the bot user
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # --- THIS IS THE FIX ---
+          # Switch to the actual branch of the pull request
+          git checkout ${{ github.head_ref }}
+
+          # Now, add, commit, and push as before
           git add dags/
           if git diff --staged --quiet; then
             echo "No new DAG to commit."
