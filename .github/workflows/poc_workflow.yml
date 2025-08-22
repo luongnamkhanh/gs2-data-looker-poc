@@ -30,15 +30,18 @@ jobs:
       - name: Find and Validate Changed Config
         id: find_config
         run: |
-          # This command will now work correctly
-          CONFIG_FILE=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} -- 'gs2_configs/*.yaml' | head -n 1)
+          # This command uses the specific commit SHAs to avoid branch name issues
+          CONFIG_FILE=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- 'gs2_configs/*.yaml' | head -n 1)
+          
           if [ -z "$CONFIG_FILE" ]; then
             echo "No new config file found."
             exit 0
           fi
+          
           echo "Validating $CONFIG_FILE..."
           python scripts/validate_config.py "$CONFIG_FILE"
           echo "CONFIG_PATH=$CONFIG_FILE" >> $GITHUB_OUTPUT
+
 
       - name: Generate DAG from Config
         if: steps.find_config.outputs.CONFIG_PATH
