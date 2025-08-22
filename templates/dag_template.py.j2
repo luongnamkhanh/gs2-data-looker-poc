@@ -7,7 +7,7 @@ from gsheet_uploader import upload_dataframe # We will create this helper
 with DAG(
     dag_id="{{ campaign_id }}_dag",
     start_date=pendulum.parse("{{ start_date }}"),
-    schedule=None,
+    schedule=@once,
     catchup=False,
     tags=["gs2", "generated"],
 ) as dag:
@@ -19,7 +19,7 @@ with DAG(
         task_id="upload_to_google_sheets",
         python_callable=upload_dataframe,
         op_kwargs={
-            "csv_path": "/opt/airflow/dags/data/{{ campaign_id }}.csv",
+            "csv_path": "dags/data/{{ campaign_id }}.csv",
             "gsheet_name": "My POC Airflow Sheet"
         }
     )
