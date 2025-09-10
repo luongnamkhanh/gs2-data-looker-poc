@@ -8,7 +8,7 @@ config_path = sys.argv[1] # e.g., "gs2_configs/campaign_789.yaml"
 
 # Extract ticket ID from the ticket link in the config data
 def extract_ticket_id(ticket_link):
-    match = re.search(r'ticket/(\d+)', ticket_link)
+    match = re.search(r'/(\d+)', ticket_link)
     return match.group(1) if match else None
 
 # Load the config data from the YAML file

@@ -19,8 +19,7 @@
     },
     "data_path": {
       "type": "string",
-      "description": "The full S3 path to the source data.",
-      "pattern": "^s3://[a-zA-Z0-9.-]+/[a-zA-Z0-9./_-]+$"
+      "description": "The full S3 path to the source data."
     },
     "ticket_link": {
       "type": "string",
