@@ -24,7 +24,7 @@ with DAG(
         task_id="upload_to_google_sheets",
         python_callable=upload_dataframe,
         op_kwargs={
-            "csv_path": "s3://fake-bucket/campaign_poc.csv",
+            "csv_path": "dags/data/campaign_poc_2.csv",
             "gsheet_name": "My POC Airflow Sheet"
         }
     )
