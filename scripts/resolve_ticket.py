@@ -6,6 +6,8 @@ import hmac
 import hashlib
 import requests
 import json
+from dotenv import load_dotenv
+import os
 
 # This is a placeholder for how a signature might be generated.
 # The actual logic must be provided by the API owner.
@@ -56,13 +58,13 @@ def perform_ticket_action(ticket_id, action_id, client_id, client_secret):
     return response.json()
 
 def main():
-    if len(sys.argv) < 4:
-        print("Usage: python resolve_ticket.py <config_path> <client_id> <client_secret>")
+    if len(sys.argv) < 2:
+        print("Usage: python resolve_ticket.py <config_path>")
         sys.exit(1)
         
     config_path = sys.argv[1]
-    client_id = sys.argv[2]
-    client_secret = sys.argv[3]
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
 
     # --- 1. Load YAML and Extract Ticket ID ---
     try:

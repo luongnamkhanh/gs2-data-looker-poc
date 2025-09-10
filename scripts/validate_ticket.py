@@ -6,6 +6,10 @@ import hmac
 import hashlib
 import requests
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # This is a placeholder for how a signature might be generated.
 # The actual logic must be provided by the API owner.
@@ -37,13 +41,13 @@ def get_ticket_details(ticket_id, client_id, client_secret):
 
 
 def main():
-    if len(sys.argv) < 4:
-        print("Usage: python validate_ticket.py <config_path> <client_id> <client_secret>")
+    if len(sys.argv) < 2:
+        print("Usage: python validate_ticket.py <config_path>")
         sys.exit(1)
 
     config_path = sys.argv[1]
-    client_id = sys.argv[2]
-    client_secret = sys.argv[3] # Passed from GitHub Secrets
+    client_id = os.getenv("CLIENT_ID")
+    client_secret = os.getenv("CLIENT_SECRET")
 
     # --- 1. Load YAML and Extract Ticket ID ---
     try:
@@ -51,9 +55,6 @@ def main():
             config_data = yaml.safe_load(f)
         
         ticket_link = config_data.get("ticket_link")
-        if not ticket_link:
-            print(f"❌ ERROR: 'ticket_link' not found in {config_path}")
-            sys.exit(1)
 
         match = re.search(r'/(\d+)$', ticket_link)
         if not match:
