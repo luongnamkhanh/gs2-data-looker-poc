@@ -27,7 +27,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install Dependencies
-        run: pip install pyyaml jsonschema jinja2
+        run: pip install pyyaml jsonschema jinja2 requests
 
       # The rest of your steps are correct and do not need to change
       - name: Find and Validate Changed Config
