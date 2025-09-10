@@ -6,12 +6,12 @@ from airflow.operators.bash import BashOperator
 
 # Import the helper functions from the plugins folder
 from gsheet_uploader import upload_dataframe
-from ticket_utils import get_ticket_id_from_config, resolve_ticket
+from ticket_utils import resolve_ticket
 
 with DAG(
     dag_id="campaign_poc_2_dag",
     start_date=pendulum.parse("2025-08-21"),
-    schedule=@once,
+    schedule="@once",
     catchup=False,
     is_paused_upon_creation=False,
     tags=["gs2", "generated"],
@@ -34,7 +34,7 @@ with DAG(
         python_callable=resolve_ticket,
         # Pass the ticket ID from the previous task using XComs
         op_kwargs={
-            "ticket_id": "None"
+            "ticket_id": "20992"
         }
     )
 
