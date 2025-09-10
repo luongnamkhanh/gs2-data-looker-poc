@@ -44,14 +44,19 @@ jobs:
           echo "Validating $CONFIG_FILE..."
           python scripts/validate_config.py "$CONFIG_FILE"
           echo "CONFIG_PATH=$CONFIG_FILE" >> $GITHUB_OUTPUT
-
+      
+      - name: Validate MyTool Ticket Status is 'In Process'
+        if: steps.find_config.outputs.CONFIG_PATH
+        run: |
+          echo "Running API validation for ticket in ${{ steps.find_config.outputs.CONFIG_PATH }}..."
+          python scripts/validate_ticket.py "${{ steps.find_config.outputs.CONFIG_PATH }}" "${{ secrets.MYTOOL_CLIENT_ID }}" "${{ secrets.MYTOOL_CLIENT_SECRET }}"
 
       - name: Generate DAG from Config
         if: steps.find_config.outputs.CONFIG_PATH
         run: |
           echo "Generating DAG from ${{ steps.find_config.outputs.CONFIG_PATH }}..."
           python scripts/generate_dag.py "${{ steps.find_config.outputs.CONFIG_PATH }}"
-
+      
       - name: Commit Generated DAG
         if: steps.find_config.outputs.CONFIG_PATH
         run: |
@@ -71,3 +76,10 @@ jobs:
             git commit -m "auto: Generate DAG for ${{ steps.find_config.outputs.CONFIG_PATH }}"
             git push
           fi
+          
+      - name: Resolve MyTool Ticket
+        # This step only runs if all previous steps in the job were successful
+        if: success() && steps.find_config.outputs.CONFIG_PATH
+        run: |
+          echo "All steps successful. Resolving ticket..."
+          python scripts/resolve_ticket.py "${{ steps.find_config.outputs.CONFIG_PATH }}" "${{ secrets.MYTOOL_CLIENT_ID }}" "${{ secrets.MYTOOL_CLIENT_SECRET }}"
