@@ -15,8 +15,8 @@ load_dotenv()
 # The actual logic must be provided by the API owner.
 def generate_signature(timestamp, client_id, secret_key):
     """Generates a placeholder signature."""
-    message = f"{client_id}{timestamp}"
-    return hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).hexdigest()
+    message = f"{client_id}|{timestamp}|{secret_key}"
+    return hashlib.md5(message.encode('utf-8')).hexdigest()
 
 def get_ticket_details(ticket_id, client_id, client_secret):
     """

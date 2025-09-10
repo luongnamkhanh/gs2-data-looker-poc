@@ -13,8 +13,8 @@ import os
 # The actual logic must be provided by the API owner.
 def generate_signature(timestamp, client_id, secret_key):
     """Generates a placeholder signature."""
-    message = f"{client_id}{timestamp}"
-    return hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).hexdigest()
+    message = f"{client_id}|{timestamp}|{secret_key}"
+    return hashlib.md5(message.encode('utf-8')).hexdigest()
 
 def get_ticket_actions(ticket_id, client_id, client_secret):
     """Gets the list of available actions for a ticket."""
@@ -59,26 +59,12 @@ def perform_ticket_action(ticket_id, action_id, client_id, client_secret):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python resolve_ticket.py <config_path>")
+        print("Usage: python resolve_ticket.py <ticket_id>")
         sys.exit(1)
         
-    config_path = sys.argv[1]
+    ticket_id = sys.argv[1]
     client_id = os.getenv("CLIENT_ID")
     client_secret = os.getenv("CLIENT_SECRET")
-
-    # --- 1. Load YAML and Extract Ticket ID ---
-    try:
-        with open(config_path, 'r') as f:
-            config_data = yaml.safe_load(f)
-        ticket_link = config_data.get("ticket_link")
-        match = re.search(r'/(\d+)$', ticket_link)
-        if not match:
-            print(f"❌ ERROR: Could not parse ticket ID from URL: {ticket_link}")
-            sys.exit(1)
-        ticket_id = match.group(1)
-    except Exception as e:
-        print(f"❌ An unexpected error occurred while reading the config file: {e}")
-        sys.exit(1)
 
     # --- 2. Find the 'Resolve' action ID and execute it ---
     try:
