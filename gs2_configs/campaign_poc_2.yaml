@@ -1,4 +1,4 @@
-campaign_id: "campaign_poc"
+campaign_id: "campaign_poc_2"
 start_date: "2025-08-21"
 data_path: "s3://fake-bucket/campaign_poc.csv" # Path is just for metadata in this POC
 ticket_link: "https://mytool.ge.vng.vn/vi/amt/v2/request/20992"
