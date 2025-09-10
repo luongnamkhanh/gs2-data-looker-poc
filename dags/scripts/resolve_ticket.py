@@ -59,26 +59,12 @@ def perform_ticket_action(ticket_id, action_id, client_id, client_secret):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python resolve_ticket.py <config_path>")
+        print("Usage: python resolve_ticket.py <ticket_id>")
         sys.exit(1)
         
-    config_path = sys.argv[1]
+    ticket_id = sys.argv[1]
     client_id = os.getenv("CLIENT_ID")
     client_secret = os.getenv("CLIENT_SECRET")
-
-    # --- 1. Load YAML and Extract Ticket ID ---
-    try:
-        with open(config_path, 'r') as f:
-            config_data = yaml.safe_load(f)
-        ticket_link = config_data.get("ticket_link")
-        match = re.search(r'/(\d+)$', ticket_link)
-        if not match:
-            print(f"❌ ERROR: Could not parse ticket ID from URL: {ticket_link}")
-            sys.exit(1)
-        ticket_id = match.group(1)
-    except Exception as e:
-        print(f"❌ An unexpected error occurred while reading the config file: {e}")
-        sys.exit(1)
 
     # --- 2. Find the 'Resolve' action ID and execute it ---
     try:

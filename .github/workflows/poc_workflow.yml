@@ -77,9 +77,3 @@ jobs:
             git push
           fi
 
-      - name: Resolve MyTool Ticket
-        # This step only runs if all previous steps in the job were successful
-        if: success() && steps.find_config.outputs.CONFIG_PATH
-        run: |
-          echo "All steps successful. Resolving ticket..."
-          python scripts/resolve_ticket.py "${{ steps.find_config.outputs.CONFIG_PATH }}"
