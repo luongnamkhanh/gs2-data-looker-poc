@@ -5,8 +5,8 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 
 # Import the helper functions from the plugins folder
-from gsheet_uploader import upload_dataframe
-from ticket_utils import resolve_ticket
+from plugins.gsheet_uploader import upload_dataframe
+from plugins.ticket_utils import resolve_ticket
 
 with DAG(
     dag_id="campaign_poc_2_dag",
@@ -34,7 +34,7 @@ with DAG(
         python_callable=resolve_ticket,
         # Pass the ticket ID from the previous task using XComs
         op_kwargs={
-            "ticket_id": "20992"
+            "ticket_id": "21656"
         }
     )
 

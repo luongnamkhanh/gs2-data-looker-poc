@@ -86,7 +86,7 @@ def main():
         # Perform the action
         resolve_response = perform_ticket_action(ticket_id, resolve_action_id, client_id, client_secret)
         
-        if resolve_response.get("code") == "SUCCESS":
+        if resolve_response.get("statusCode") == 200 and resolve_response.get("message") == "Data received.":
             print(f"✅ Successfully resolved ticket {ticket_id}.")
             sys.exit(0)
         else:
