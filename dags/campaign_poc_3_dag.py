@@ -9,7 +9,7 @@ from plugins.gsheet_uploader import upload_dataframe
 from plugins.ticket_utils import resolve_ticket
 
 with DAG(
-    dag_id="campaign_poc_2_dag",
+    dag_id="campaign_poc_3_dag",
     start_date=pendulum.parse("2025-08-21"),
     schedule="@once",
     catchup=False,
@@ -34,7 +34,7 @@ with DAG(
         python_callable=resolve_ticket,
         # Pass the ticket ID from the previous task using XComs
         op_kwargs={
-            "ticket_id": "21656"
+            "ticket_id": "21199"
         }
     )
 
