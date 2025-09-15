@@ -7,6 +7,27 @@ from airflow.operators.bash import BashOperator
 # Import the helper functions from the plugins folder
 from plugins.gsheet_uploader import upload_dataframe
 from plugins.ticket_utils import resolve_ticket
+from plugins.ge_utils import validate_dataframe
+
+def load_and_validate_data(**kwargs):
+    """
+    Loads data from the path specified in the config, then validates the
+    resulting DataFrame using the Great Expectations helper function.
+    """
+    data_path = kwargs['templates_dict']['data_path']
+    suite_to_use = kwargs['templates_dict']['suite_name']
+    
+    # In a real S3 setup, you would use a library like s3fs to read the file
+    print(f"Loading data from: {data_path}")
+    
+    df = pd.read_csv(data_path)
+    
+    # Call the validation function from our plugin
+    validate_dataframe(dataframe=df, suite_name=suite_to_use)
+    
+    # If validation passes, return the path for the next task.
+    # If it fails, the function above will raise an error, failing this task.
+    return true
 
 with DAG(
     dag_id="{{ campaign_id }}_dag",
@@ -17,8 +38,14 @@ with DAG(
     tags=["gs2", "generated"],
 ) as dag:
 
-    # In a real scenario, a GreatExpectationsOperator would be here.
-    # For the POC, we'll just simulate a successful validation.
+    load_and_validate = PythonOperator(
+        task_id="load_and_validate_data",
+        python_callable=load_and_validate_data,
+        templates_dict={
+            "data_path": "{{ data_path }}",
+            "suite_name": "my_first_suite" # Use the suite we created
+        }
+    )
 
     upload_to_gsheet = PythonOperator(
         task_id="upload_to_google_sheets",
@@ -39,4 +66,4 @@ with DAG(
     )
 
     # Define the new task order
-    upload_to_gsheet >> resolve_ticket_task
+    load_and_validate >> upload_to_gsheet >> resolve_ticket_task

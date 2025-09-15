@@ -1,0 +1,25 @@
+{
+  "expectation_suite_name": "my_first_suite",
+  "ge_cloud_id": null,
+  "expectations": [
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "min_value": 1,
+        "max_value": 1000
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_to_exist",
+      "kwargs": {
+        "column": "user"
+      },
+      "meta": {}
+    }
+  ],
+  "data_asset_type": null,
+  "meta": {
+    "great_expectations_version": "0.18.12"
+  }
+}
