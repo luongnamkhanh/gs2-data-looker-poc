@@ -2,7 +2,7 @@
 import pendulum
 from airflow.models.dag import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
+from airflow.operators.empty import EmptyOperator
 import pandas as pd
 
 # Import the helper functions from the plugins folder
@@ -55,7 +55,7 @@ with DAG(
         }
     )
 
-    end = EmptyOperator(task_id="End") 
+    end = EmptyOperator(task_id="end") 
 
     # Define the new task order
     start >> load_and_validate >> upload_to_gsheet >> resolve_ticket_task >> end

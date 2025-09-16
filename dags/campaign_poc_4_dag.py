@@ -2,7 +2,7 @@
 import pendulum
 from airflow.models.dag import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
+from airflow.operators.empty import EmptyOperator
 import pandas as pd
 
 # Import the helper functions from the plugins folder
