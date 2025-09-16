@@ -3,7 +3,7 @@ import subprocess
 import yaml
 import re
 
-def resolve_ticket(ticket_id: str):
+def resolve_ticket(ticket_id: str, **kwargs):
     """
     Executes the resolve_ticket.py script as a subprocess.
     Requires CLIENT_ID and CLIENT_SECRET to be set as environment variables.
@@ -12,6 +12,7 @@ def resolve_ticket(ticket_id: str):
     
     # The path to the script inside the Airflow container
     script_path = "/opt/airflow/dags/scripts/resolve_ticket.py"
+    task_instance = kwargs.get("task_instance")
     
     # # Run the script as a subprocess
     # result = subprocess.run(
@@ -56,5 +57,15 @@ def resolve_ticket(ticket_id: str):
         print(e.stdout)
         print("--- captured STDERR from script ---")
         print(e.stderr)
+        
+        # Push the error message to XCom if task_instance is available
+        if task_instance:
+            all_failures = {
+                "return_code": e.returncode,
+                "stdout": e.stdout,
+                "stderr": e.stderr
+            }
+            task_instance.xcom_push(key="message_error", value=all_failures)
+        
         # Re-raise the exception to make the Airflow task fail as expected
         raise e

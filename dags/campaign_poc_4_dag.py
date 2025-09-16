@@ -3,6 +3,7 @@ import pendulum
 from airflow.models.dag import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+import pandas as pd
 
 # Import the helper functions from the plugins folder
 from plugins.gsheet_uploader import upload_dataframe
@@ -16,6 +17,7 @@ def load_and_validate_data(**kwargs):
     """
     data_path = kwargs['templates_dict']['data_path']
     suite_to_use = kwargs['templates_dict']['suite_name']
+    campaign_id = kwargs['templates_dict']['campaign_id']
     
     # In a real S3 setup, you would use a library like s3fs to read the file
     print(f"Loading data from: {data_path}")
@@ -23,7 +25,7 @@ def load_and_validate_data(**kwargs):
     df = pd.read_csv(data_path)
     
     # Call the validation function from our plugin
-    validate_dataframe(dataframe=df, suite_name=suite_to_use)
+    validate_dataframe(campaign_id=campaign_id, dataframe=df, suite_name=suite_to_use)
     
     # If validation passes, return the path for the next task.
     # If it fails, the function above will raise an error, failing this task.
@@ -42,6 +44,7 @@ with DAG(
         task_id="load_and_validate_data",
         python_callable=load_and_validate_data,
         templates_dict={
+            "campaign_id": "campaign_poc_4",
             "data_path": "dags/data/campaign_poc_2.csv",
             "suite_name": "my_first_suite" # Use the suite we created
         }

@@ -7,3 +7,6 @@ jsonschema
 jinja2
 requests
 great-expectations
+apache-airflow-providers-postgres
+psycopg2-binary
+pytz

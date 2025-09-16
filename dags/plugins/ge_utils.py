@@ -6,7 +6,7 @@ from airflow.exceptions import AirflowException
 # The absolute path to your GE project inside the Airflow container
 GE_PROJECT_DIR = "/opt/airflow/dags/gx"
 
-def validate_dataframe(campaign_id: str, dataframe: pd.DataFrame, suite_name: str):
+def validate_dataframe(campaign_id: str, dataframe: pd.DataFrame, suite_name: str, task_instance=None):
     """
     Validates an in-memory Pandas DataFrame against a Great Expectations suite.
     """
@@ -31,6 +31,52 @@ def validate_dataframe(campaign_id: str, dataframe: pd.DataFrame, suite_name: st
     validation_result = validator.validate()
 
     if not validation_result["success"]:
-        raise AirflowException("Great Expectations validation failed!")
+        # Find all failed expectations and build a detailed error message
+        failed_expectations = []
+        for result in validation_result["results"]:
+            if not result["success"]:
+                failed_rule = result["expectation_config"]["expectation_type"]
+                observed_value = result["result"].get("observed_value")
+                kwargs = result["expectation_config"]["kwargs"]
+                
+                # Format a clear message for each failure
+                error_msg = (
+                    f"Validation Failed: {failed_rule}\n"
+                    f"  > Expected: {kwargs}\n"
+                    f"  > Observed: {observed_value}"
+                )
+                failed_expectations.append(error_msg)
+        
+        # Combine all failure messages into one
+        all_failures = "\n".join(failed_expectations)
+
+        if task_instance:
+            task_instance.xcom_push(key="message_error", value=all_failures)
+            
+        raise AirflowException(
+            f"Great Expectations validation failed!\n{all_failures}"
+        )
     
     print("✅ Great Expectations validation successful!")
+
+def load_and_validate_data(**kwargs):
+    """
+    Loads data from the path specified in the config, then validates the
+    resulting DataFrame using the Great Expectations helper function.
+    """
+    data_path = kwargs['templates_dict']['data_path']
+    suite_to_use = kwargs['templates_dict']['suite_name']
+    campaign_id = kwargs['templates_dict']['campaign_id']
+    task_instance = kwargs['ti']
+
+    # In a real S3 setup, you would use a library like s3fs to read the file
+    print(f"Loading data from: {data_path}")
+
+    df = pd.read_csv(data_path)
+
+    # Call the validation function from our plugin
+    validate_dataframe(campaign_id=campaign_id, dataframe=df, suite_name=suite_to_use, task_instance=task_instance)
+
+    # If validation passes, return the path for the next task.
+    # If it fails, the function above will raise an error, failing this task.
+    return True
