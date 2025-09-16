@@ -59,14 +59,15 @@ def on_failure_callback(context: Context):
     
     task_instance = context["task_instance"]
     
-    # Try to get the detailed error message from Great Expectations (pushed to XCom)
-    error_message = task_instance.xcom_pull(
-        task_ids=task_instance.task_id, key="message_error"
-    )
-    
+    error_message = task_instance.xcom_pull(key="message_error")    
+
     # If no custom message, get the standard Python exception
     if not error_message:
-        error_message = str(context.get("exception"))
+        exception = context.get("exception")
+        if exception:
+            error_message = str(exception)
+        else:
+            error_message = "Unknown failure."
 
     error_message = error_message.replace("'", "''")  # Basic SQL escaping
 
