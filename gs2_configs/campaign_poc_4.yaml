@@ -1,5 +1,5 @@
 campaign_id: "campaign_poc_4"
-start_date: "2025-08-21"
+start_date: "2025-08-20"
 data_path: "dags/data/campaign_poc_2.csv" # Path is just for metadata in this POC
 ticket_link: "https://mytool.ge.vng.vn/vi/amt/v2/request/22081"
 schema:
