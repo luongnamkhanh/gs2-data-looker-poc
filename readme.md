@@ -1,0 +1,1 @@
+CREATE TABLE dag_run_log (id SERIAL PRIMARY KEY, dag_id VARCHAR(255) NOT NULL, start_date TIMESTAMPTZ, end_date TIMESTAMPTZ, status VARCHAR(50), message TEXT)
