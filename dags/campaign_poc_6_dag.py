@@ -12,8 +12,8 @@ from plugins.ge_utils import load_and_validate_data
 from plugins.dag_logger import log_start, log_end, on_failure_callback
 
 with DAG(
-    dag_id="{{ campaign_id }}_dag",
-    start_date=pendulum.parse("{{ start_date }}"),
+    dag_id="campaign_poc_6_dag",
+    start_date=pendulum.parse("2025-10-20"),
     schedule="@once",
     catchup=False,
     is_paused_upon_creation=False,
@@ -31,8 +31,8 @@ with DAG(
         task_id="validate_and_upload",
         python_callable=load_validate_and_upload,
         templates_dict={
-            "campaign_id": "{{ campaign_id }}",
-            "data_path":  "{{ data_path }}",
+            "campaign_id": "campaign_poc_6",
+            "data_path":  "dags/data/campaign_poc_2.csv",
             "suite_name": "my_first_suite",
             "gsheet_name": "My POC Airflow Sheet"
         },
@@ -45,7 +45,7 @@ with DAG(
         python_callable=resolve_ticket,
         # Pass the ticket ID from the previous task using XComs
         op_kwargs={
-            "ticket_id": "{{ ticket_id }}"
+            "ticket_id": "22081"
         }
     )
 
