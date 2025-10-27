@@ -8,7 +8,7 @@ import pandas as pd
 # Import the helper functions from the plugins folder
 from plugins.gsheet_uploader import upload_dataframe
 from plugins.ticket_utils import resolve_ticket
-from plugins.ge_utils import load_and_validate_data
+from plugins.ge_utils import load_and_validate_data,load_validate_and_upload
 from plugins.dag_logger import log_start, log_end, on_failure_callback
 
 with DAG(
