@@ -83,7 +83,7 @@ services:
   postgres:
     image: postgres:13
     ports:
-      - 5432:5432
+      - 5438:5432
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
