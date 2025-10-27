@@ -8,7 +8,7 @@ import pandas as pd
 # Import the helper functions from the plugins folder
 from plugins.gsheet_uploader import upload_dataframe
 from plugins.ticket_utils import resolve_ticket
-from plugins.ge_utils import load_and_validate_data, load_validate_and_upload
+from plugins.ge_utils import load_and_validate_data
 from plugins.dag_logger import log_start, log_end, on_failure_callback
 
 with DAG(
@@ -27,15 +27,23 @@ with DAG(
         python_callable=log_start,
     )
 
-    validate_and_upload = PythonOperator(
-        task_id="validate_and_upload",
-        python_callable=load_validate_and_upload,
+    load_and_validate = PythonOperator(
+        task_id="load_and_validate_data",
+        python_callable=load_and_validate_data,
         templates_dict={
             "campaign_id": "campaign_poc_5",
             "data_path": "dags/data/campaign_poc_2.csv",
-            "suite_name": "my_first_suite",
+            "suite_name": "my_first_suite" # Use the suite we created
+        }
+    )
+
+    upload_to_gsheet = PythonOperator(
+        task_id="upload_to_google_sheets",
+        python_callable=upload_dataframe,
+        op_kwargs={
+            "csv_path": "dags/data/campaign_poc_2.csv",
             "gsheet_name": "My POC Airflow Sheet"
-        },
+        }
     )
 
     resolve_ticket_task = PythonOperator(
@@ -50,4 +58,4 @@ with DAG(
     end = EmptyOperator(task_id="end") 
 
     # Define the new task order
-    start >> validate_and_upload >> resolve_ticket_task >> end
+    start >> load_and_validate >> upload_to_gsheet >> resolve_ticket_task >> end
