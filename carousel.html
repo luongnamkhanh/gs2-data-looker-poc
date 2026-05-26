@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Field Notes No. 14 / Carousel v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --surface: #ebe5d3;
+    --elevated: #dfd9c4;
+    --line: #c5beab;
+    --line-soft: rgba(0,0,0,0.06);
+    --text: #1a1a14;
+    --text-dim: #5f5b4f;
+    --text-faint: #948e7d;
+    --accent: #4d6b00;
+    --accent-dim: rgba(77,107,0,0.10);
+    --warn: #b8281a;
+    --warn-soft: rgba(184,40,26,0.10);
+    --caution: #b27800;
+    --caution-soft: rgba(178,120,0,0.10);
+    --ok: #2f6e3e;
+    --ai: #1f5a78;
+    --ai-soft: rgba(31,90,120,0.10);
+    --serif: 'Instrument Serif', 'Georgia', serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #e3dcc6;
+    color: var(--text);
+    font-family: var(--mono);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+
+  .meta-bar {
+    width: 1080px;
+    max-width: 100%;
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 4px;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg);
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04) inset;
+  }
+
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .slide::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,107,0,0.05), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(77,107,0,0.03), transparent 70%);
+    pointer-events: none;
+  }
+
+  .slide-head {
+    position: absolute;
+    top: 40px; left: 56px; right: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    z-index: 2;
+  }
+  .slide-head .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-head .brand::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--accent);
+    display: inline-block;
+    box-shadow: 0 0 16px rgba(77,107,0,0.3);
+  }
+
+  .slide-foot {
+    position: absolute;
+    bottom: 40px; left: 56px; right: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    z-index: 2;
+  }
+
+  .slide-body {
+    position: absolute;
+    inset: 110px 56px 92px 56px;
+    z-index: 1;
+  }
+
+  /* shared section headers */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 84px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-top: 18px;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-caption {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 16px;
+    max-width: 760px;
+    line-height: 1.7;
+  }
+
+  /* ============================================ */
+  /* Slide 1 - Cover                              */
+  /* ============================================ */
+  .cover .slide-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover .kicker {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    align-self: flex-start;
+  }
+  .cover .headline {
+    font-family: var(--serif);
+    font-size: 104px;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    color: var(--text);
+    margin-top: 48px;
+  }
+  .cover .headline em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .cover .headline .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--warn);
+    text-decoration-thickness: 4px;
+    color: var(--text-dim);
+  }
+  .cover .deck {
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin-top: 40px;
+  }
+  .cover .deck strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .cover .deck-rule {
+    height: 1px;
+    width: 80px;
+    background: var(--accent);
+    margin-top: 36px;
+  }
+  .cover .signature {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cover .signature span:first-child { color: var(--text); }
+
+  /* ============================================ */
+  /* Slide 2 - The Before                         */
+  /* ============================================ */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 56px;
+  }
+  .setup .lede {
+    font-family: var(--serif);
+    font-size: 28px;
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .setup .lede em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .runbook {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 26px 28px 30px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: var(--text-dim);
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.10);
+  }
+  .runbook::before {
+    content: "RUNBOOK.MD";
+    position: absolute;
+    top: -10px; left: 24px;
+    background: var(--bg);
+    padding: 0 8px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+  .runbook h4 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin: 0 0 12px;
+    font-weight: 500;
+  }
+  .runbook ol {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+  }
+  .runbook ol li {
+    counter-increment: step;
+    padding-left: 28px;
+    position: relative;
+  }
+  .runbook ol li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute; left: 0;
+    color: var(--text-faint);
+  }
+  .runbook .strike { text-decoration: line-through; opacity: 0.5; }
+  .runbook .stamp {
+    margin-top: 18px;
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transform: rotate(-1.5deg);
+  }
+
+  .symptom-list {
+    margin-top: 28px;
+    display: grid;
+    gap: 10px;
+  }
+  .symptom-list .row {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .symptom-list .row .x {
+    color: var(--warn);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .symptom-list .row b { color: var(--text); font-weight: 500; }
+
+  /* ============================================ */
+  /* Slide 3 - Architecture                       */
+  /* ============================================ */
+  .arch-diagram {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 40px 36px;
+    position: relative;
+  }
+  .arch-diagram::before {
+    content: "FIG. 01 / SYSTEM FLOW";
+    position: absolute;
+    top: -10px; left: 24px;
+    background: var(--bg);
+    padding: 0 8px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+  .arch-diagram svg { width: 100%; height: auto; display: block; }
+
+  .arch-legend {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .arch-legend .dot {
+    display: inline-block; width: 10px; height: 10px;
+    margin-right: 8px; vertical-align: middle;
+  }
+  .arch-legend .dot.declared { background: var(--accent); }
+  .arch-legend .dot.live { background: var(--text-dim); }
+  .arch-legend .dot.audit { background: var(--warn); }
+  .arch-legend .dot.userws { background: var(--ai); }
+
+  .arch-callout {
+    margin-top: 22px;
+    padding: 16px 20px;
+    border-left: 2px solid var(--ai);
+    background: var(--ai-soft);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .arch-callout b { color: var(--ai); font-weight: 500; }
+
+  /* ============================================ */
+  /* Shared app window chrome                     */
+  /* ============================================ */
+  .app-window {
+    margin-top: 32px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.12);
+  }
+  .app-chrome {
+    background: var(--elevated);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+  .app-chrome .dots { display: flex; gap: 7px; }
+  .app-chrome .dots span {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #a89f87;
+  }
+  .app-chrome .crumb {
+    display: flex; gap: 10px; align-items: center;
+    color: var(--text-dim);
+  }
+  .app-chrome .crumb b { color: var(--text); font-weight: 500; }
+  .app-chrome .ws-tag {
+    margin-left: auto;
+    padding: 3px 9px;
+    border: 1px solid var(--ai);
+    color: var(--ai);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    border-radius: 999px;
+  }
+  .app-chrome .ws-tag.admin {
+    border-color: var(--warn);
+    color: var(--warn);
+  }
+
+  .app-toolbar {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: var(--surface);
+  }
+  .app-toolbar .filters { display: flex; gap: 8px; flex-shrink: 0; }
+  .pill {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 11px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    background: transparent;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .app-toolbar .summary {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .app-toolbar .summary b { color: var(--accent); }
+
+  /* Plan table */
+  table.plan {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  table.plan thead th {
+    text-align: left;
+    padding: 11px 22px;
+    color: var(--text-faint);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--elevated);
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  table.plan tbody td {
+    padding: 12px 22px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .status-tag::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+  }
+  .status-tag.grant {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(77,107,0,0.3);
+  }
+  .status-tag.grant::before { background: var(--accent); }
+  .status-tag.revoke {
+    background: var(--warn-soft);
+    color: var(--warn);
+    border: 1px solid rgba(184,40,26,0.3);
+  }
+  .status-tag.revoke::before { background: var(--warn); }
+  .status-tag.sync {
+    background: rgba(0,0,0,0.04);
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+  }
+  .status-tag.sync::before { background: var(--text-dim); }
+  .status-tag.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(77,107,0,0.3);
+  }
+  .status-tag.active::before { background: var(--accent); }
+  .status-tag.soft-del {
+    background: rgba(0,0,0,0.04);
+    color: var(--text-faint);
+    border: 1px solid var(--line);
+  }
+  .status-tag.soft-del::before { background: var(--text-faint); }
+
+  .obj { color: var(--text); }
+  .obj .ns { color: var(--text-faint); }
+  .principal { color: var(--text-dim); }
+  .priv { color: var(--accent); font-weight: 500; letter-spacing: 0.04em; }
+
+  .src-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    border-radius: 2px;
+  }
+  .src-tag.yaml { color: var(--accent); border-color: rgba(77,107,0,0.3); }
+  .src-tag.ui { color: var(--ai); border-color: rgba(31,90,120,0.3); }
+  .src-tag.req { color: var(--caution); border-color: rgba(178,120,0,0.3); }
+
+  .app-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px;
+    background: var(--elevated);
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+  .app-footer .actions { display: flex; gap: 10px; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .btn.primary {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ============================================ */
+  /* Slide 4 - Memberships form + table           */
+  /* ============================================ */
+  .memb-split {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 0;
+    background: var(--surface);
+  }
+  .memb-form {
+    padding: 22px 20px 24px;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .memb-form h5 {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-faint);
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field .input, .field .select {
+    display: block;
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    padding: 10px 12px;
+    border-radius: 3px;
+  }
+  .field.ok .input, .field.ok .select { border-color: rgba(77,107,0,0.4); }
+  .field.warn .input, .field.warn .select { border-color: var(--warn); }
+  .field .hint {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+  .field .hint.ok { color: var(--accent); }
+  .field .hint.err { color: var(--warn); }
+  .field .hint.note { color: var(--caution); }
+  .check-line {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+  }
+  .check-line .tick {
+    display: inline-flex; width: 14px; height: 14px;
+    align-items: center; justify-content: center;
+    background: var(--accent); color: var(--bg);
+    font-size: 9px; font-weight: 700; border-radius: 2px;
+  }
+
+  .memb-form .submit-row {
+    margin-top: 22px;
+    display: flex; gap: 8px;
+  }
+  .memb-form .submit-row .btn { flex: 1; }
+
+  table.memb {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    table-layout: fixed;
+  }
+  table.memb thead th {
+    text-align: left;
+    padding: 11px 12px;
+    color: var(--text-faint);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--elevated);
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  table.memb tbody td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .email-cell {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .avatar {
+    width: 22px; height: 22px;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-family: var(--mono);
+    letter-spacing: 0;
+  }
+
+  /* ============================================ */
+  /* Slide 6 - Validation                         */
+  /* ============================================ */
+  .valid-window .valid-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+  .valid-counter {
+    display: flex; gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+  .valid-counter span { padding: 4px 10px; border-radius: 3px; }
+  .valid-counter .pass { background: var(--accent-dim); color: var(--accent); }
+  .valid-counter .warn { background: var(--caution-soft); color: var(--caution); }
+  .valid-counter .err { background: var(--warn-soft); color: var(--warn); }
+
+  .valid-split {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .rule-body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+  }
+  .rule-body .field { margin-bottom: 0; }
+  .rule-body .field label { margin-bottom: 5px; }
+  .rule-body .field .input,
+  .rule-body .field .select { padding: 8px 11px; font-size: 12px; }
+
+  .validation-list {
+    background: var(--elevated);
+    padding: 18px 22px;
+  }
+  .validation-list h5 {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .check:last-child { border-bottom: none; }
+  .check .ico {
+    flex: 0 0 18px;
+    width: 18px; height: 18px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+  .check .msg {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+  .check .tag-mini {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    margin-left: auto;
+    padding-left: 8px;
+  }
+  .check.pass .ico { background: var(--accent); color: var(--bg); }
+  .check.warn .ico { background: var(--caution); color: var(--bg); }
+  .check.err .ico { background: var(--warn); color: var(--bg); }
+  .check .msg b { color: var(--text); font-weight: 500; }
+  .check .msg .field-name { color: var(--text-dim); }
+  .check.err .msg .field-name { color: var(--warn); }
+  .check.warn .msg .field-name { color: var(--caution); }
+  .check.pass .msg .field-name { color: var(--accent); }
+  .check .msg em { color: var(--text-dim); font-style: normal; }
+  .check .tag-mini {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* ============================================ */
+  /* Slide 7 - AI Assistant                       */
+  /* ============================================ */
+  .chat-app .chat-body {
+    background: var(--surface);
+    padding: 24px 28px;
+    min-height: 580px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .chat-msg {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .chat-msg .who {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .chat-msg.user .who { background: var(--elevated); color: var(--text); border: 1px solid var(--line); }
+  .chat-msg.ai .who { background: var(--ai-soft); color: var(--ai); border: 1px solid rgba(31,90,120,0.4); }
+
+  .bubble {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 16px 18px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .chat-msg.user .bubble {
+    background: var(--elevated);
+  }
+  .chat-msg.ai .bubble {
+    border-color: rgba(31,90,120,0.25);
+    background: linear-gradient(180deg, rgba(31,90,120,0.04), transparent 30%);
+  }
+  .bubble .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
+  .bubble code {
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 12px;
+  }
+  .bubble ol, .bubble ul {
+    margin: 10px 0 0 22px;
+    color: var(--text-dim);
+  }
+  .bubble ol li, .bubble ul li { padding: 3px 0; }
+  .bubble ol li b, .bubble ul li b { color: var(--text); font-weight: 500; }
+  .bubble .link {
+    color: var(--ai);
+    text-decoration: underline;
+    text-decoration-color: rgba(31,90,120,0.4);
+    text-underline-offset: 3px;
+  }
+  .bubble .footer-row {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+  .bubble .footer-row .src {
+    display: inline-flex; gap: 8px;
+  }
+  .bubble .footer-row .src b { color: var(--ai); font-weight: 500; }
+
+  .chat-input {
+    border-top: 1px solid var(--line);
+    background: var(--elevated);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .chat-input .input-fake {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text-faint);
+    padding: 11px 14px;
+    border-radius: 4px;
+  }
+
+  .agent-teaser {
+    margin: 0 22px;
+    padding: 12px 18px;
+    background: linear-gradient(90deg, var(--ai-soft), transparent);
+    border: 1px solid rgba(31,90,120,0.3);
+    border-left-width: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text);
+    margin-bottom: 16px;
+    margin-top: 8px;
+    border-radius: 0 4px 4px 0;
+  }
+  .agent-teaser b { color: var(--ai); font-weight: 500; }
+  .agent-teaser em { color: var(--text-dim); font-style: normal; letter-spacing: 0.04em; }
+  .agent-teaser .badge {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--ai);
+    border: 1px solid var(--ai);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  /* ============================================ */
+  /* Slide 8 - Mistake (danger modal)             */
+  /* ============================================ */
+  .mistake-body {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 36px;
+    margin-top: 40px;
+    align-items: start;
+  }
+  .mistake .story {
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .mistake .story em { font-style: italic; color: var(--warn); }
+  .mistake .story-tail {
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    padding-left: 18px;
+    border-left: 1px solid var(--warn);
+  }
+
+  .danger-modal {
+    background: var(--elevated);
+    border: 1px solid var(--warn);
+    box-shadow: 0 40px 100px rgba(184,40,26,0.12), 0 0 0 1px rgba(184,40,26,0.15);
+    padding: 24px 26px 26px;
+    position: relative;
+  }
+  .danger-modal::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent 0 12px,
+        rgba(184,40,26,0.04) 12px 14px
+      );
+    pointer-events: none;
+  }
+  .danger-modal .modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warn);
+    position: relative;
+  }
+  .danger-modal .modal-head .icon {
+    display: inline-flex;
+    width: 20px; height: 20px;
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    align-items: center; justify-content: center;
+    margin-right: 10px;
+    transform: rotate(45deg);
+  }
+  .danger-modal .modal-head .icon span { transform: rotate(-45deg); font-weight: 600; }
+  .danger-modal .modal-head time { color: var(--text-faint); font-weight: 400; }
+
+  .modal-stat { margin-top: 22px; position: relative; }
+  .modal-stat .figure {
+    font-family: var(--serif);
+    font-size: 124px;
+    line-height: 0.9;
+    color: var(--warn);
+    letter-spacing: -0.03em;
+  }
+  .modal-stat .figure em { font-style: italic; }
+  .modal-stat .figure-sub {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+  .modal-stat .figure-sub b { color: var(--text); font-weight: 500; }
+
+  .modal-rows {
+    margin-top: 20px;
+    border-top: 1px dashed var(--line);
+    padding-top: 14px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.9;
+    color: var(--text-dim);
+    position: relative;
+  }
+  .modal-rows .row { display: flex; justify-content: space-between; }
+  .modal-rows .row b { color: var(--text); font-weight: 500; }
+  .modal-rows .row .warn { color: var(--warn); font-weight: 500; }
+
+  .modal-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    position: relative;
+  }
+  .modal-actions .btn-cancel {
+    flex: 1;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 11px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .modal-actions .btn-confirm {
+    flex: 1;
+    background: var(--warn);
+    color: var(--bg);
+    border: 1px solid var(--warn);
+    padding: 11px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0.4;
+    cursor: not-allowed;
+    position: relative;
+  }
+  .modal-actions .btn-confirm::after {
+    content: "DISABLED";
+    position: absolute;
+    top: 50%; right: -2px;
+    transform: translateY(-50%) rotate(-2deg);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--warn);
+    background: var(--bg);
+    border: 1px solid var(--warn);
+    padding: 2px 6px;
+  }
+
+  /* Mistake variants for title */
+  .mistake .title {
+    font-family: var(--serif);
+    font-size: 92px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+    color: var(--text);
+  }
+  .mistake .title em { font-style: italic; color: var(--warn); }
+  .mistake .label { color: var(--warn) !important; }
+
+  /* ============================================ */
+  /* Slide 9 - Lessons                            */
+  /* ============================================ */
+  .lessons .deck {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 18px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  .lesson-list {
+    margin-top: 44px;
+    display: grid;
+    gap: 22px;
+  }
+  .lesson {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .lesson:last-child { border-bottom: 1px solid var(--line); }
+  .lesson .num {
+    font-family: var(--serif);
+    font-size: 56px;
+    line-height: 1;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .lesson .body h3 {
+    font-family: var(--serif);
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--text);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .lesson .body h3 em { font-style: italic; color: var(--accent); }
+  .lesson .body p {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+
+  .cta-block {
+    margin-top: 36px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .cta-block::before {
+    content: "QUESTION";
+    position: absolute;
+    top: -10px; left: 20px;
+    background: var(--bg);
+    padding: 0 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+  }
+  .cta-block .q-mark {
+    font-family: var(--serif);
+    font-size: 70px;
+    line-height: 0.8;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .cta-block .q-body {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .cta-block .q-body em { font-style: italic; color: var(--accent); }
+
+  /* ============================================ */
+  /* Slide 5 - Intro the app (overview)           */
+  /* ============================================ */
+  .intro .feat-grid {
+    margin-top: 38px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .feat-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 22px 22px;
+    position: relative;
+  }
+  .feat-card .feat-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+  .feat-card h4 {
+    font-family: var(--serif);
+    font-size: 28px;
+    line-height: 1.15;
+    color: var(--text);
+    font-weight: 400;
+    margin-top: 8px;
+    letter-spacing: -0.01em;
+  }
+  .feat-card h4 em { color: var(--accent); font-style: italic; }
+  .feat-card p {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+  .feat-card .tag-pill {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .feat-card .tag-pill.beta { color: var(--ai); border-color: rgba(31,90,120,0.4); }
+  .feat-card .tag-pill.live { color: var(--accent); border-color: rgba(77,107,0,0.4); }
+
+  /* ============================================ */
+  /* Body text + instructions                     */
+  /* ============================================ */
+  .post-body {
+    width: 1080px;
+    max-width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 36px 40px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.85;
+  }
+  .post-body h2 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .post-body p { margin-bottom: 16px; color: var(--text-dim); }
+  .post-body p.lead { color: var(--text); font-size: 15px; }
+  .post-body p strong { color: var(--text); font-weight: 500; }
+  .post-body .tags {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .post-body .tags span { color: var(--accent); }
+
+  .instructions {
+    width: 1080px;
+    max-width: 100%;
+    border: 1px dashed var(--line);
+    background: rgba(77,107,0,0.05);
+    color: var(--text-dim);
+    padding: 22px 30px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .instructions strong { color: var(--accent); font-weight: 500; }
+  .instructions code {
+    background: var(--surface);
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="instructions">
+  <strong>CAROUSEL v2.</strong> Painpoint -> Solution flow, 9 slides, full feature coverage (memberships, plan/apply, validation, AI assistant, audit) + the mistake story for humility. All data fabricated. <br><br>
+  <strong>HOW TO USE.</strong> Open in Chrome at 100% zoom. Each <code>.slide</code> below is 1080 x 1350 px. Use Devtools (<code>Cmd+Shift+P</code> -> "Capture node screenshot") on each slide, or any full-element screenshot extension. Upload the 9 PNGs to LinkedIn as a document carousel. The post body text is at the very bottom. <br><br>
+  <strong>WARNING.</strong> Even with sanitized names, the dual-workspace + plan/apply pattern is a recognizable fingerprint. Get InfoSec / line manager sign-off before posting.
+</div>
+
+<div class="meta-bar">
+  <span>FIELD NOTES NO. 14</span>
+  <span>UNITY CATALOG / GRANTS / MEMBERSHIPS / AI</span>
+  <span>09 SLIDES</span>
+</div>
+
+<!-- ========== SLIDE 1 / COVER ========== -->
+<article class="slide cover">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 01 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div>
+      <div class="kicker">Building a Unity Catalog access manager</div>
+      <h1 class="headline">
+        Our access control<br>was <span class="strike">a Confluence page.</span><br>
+        <em>That was the whole system.</em>
+      </h1>
+    </div>
+
+    <div>
+      <p class="deck">
+        <strong>Nine slides.</strong> The pain, the app, four features, one mistake big enough to teach me how to ship safety gates. <br><br>
+        Manual GRANTs do not scale. Spreadsheets are not audit trails. So I built a Databricks app for the job. Swipe.
+      </p>
+      <div class="deck-rule"></div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div class="signature">
+      <span>BUILT &amp; BROKEN BY ME</span>
+      <span>2026 . FIELD JOURNAL</span>
+    </div>
+    <div>SWIPE &rarr;</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 2 / THE PAIN ========== -->
+<article class="slide setup">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 02 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">02 / THE PAIN</div>
+    <h2 class="section-title">A runbook<br><em>and a prayer.</em></h2>
+
+    <div class="setup-grid">
+      <div>
+        <p class="lede">
+          Every new engineer, every new project, every reshuffle: open a SQL editor, paste from a doc, hope nobody fat-fingered the schema name.
+        </p>
+
+        <div class="symptom-list">
+          <div class="row"><span class="x">x</span><span><b>5 to 9 days</b> from request ticket to working access</span></div>
+          <div class="row"><span class="x">x</span><span>nobody could answer <b>"who has access to what, and why"</b></span></div>
+          <div class="row"><span class="x">x</span><span><b>silent drift</b>: hand-typed grants outliving the people who wrote them</span></div>
+          <div class="row"><span class="x">x</span><span>onboarding 12 SPs to a new catalog took <b>2 engineering days</b></span></div>
+          <div class="row"><span class="x">x</span><span>audit asked "show me the grants from Q3" and the answer was <b>silence</b></span></div>
+        </div>
+      </div>
+
+      <div class="runbook">
+        <h4>Onboarding / data-platform</h4>
+        <ol>
+          <li>Confirm ticket has manager approval</li>
+          <li>Add user to group <code>dp_readers_v2</code></li>
+          <li class="strike">Wait for sync (15 to 45 min)</li>
+          <li>Open Databricks SQL editor</li>
+          <li>Run <code>GRANT USAGE ON CATALOG ...</code></li>
+          <li>Run <code>GRANT SELECT ON SCHEMA ... silver</code></li>
+          <li>Run <code>GRANT SELECT ON SCHEMA ... gold</code></li>
+          <li class="strike">Update access spreadsheet</li>
+          <li>Reply on ticket "done"</li>
+          <li class="strike">Pray nothing breaks</li>
+        </ol>
+        <span class="stamp">Last edited 14 months ago</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>02 / 09</div>
+    <div>NEXT: THE LOOP THAT REPLACED IT</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 3 / ARCHITECTURE ========== -->
+<article class="slide arch">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 03 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">03 / ARCHITECTURE</div>
+    <h2 class="section-title">Plan, <em>then apply.</em></h2>
+    <p class="section-caption">
+      Same loop as Terraform. Different blast radius. Declared rules live in a table. A snapshot job walks the live catalog. The diff lands in a review UI. Apply only runs after a human looks at the plan.
+    </p>
+
+    <div class="arch-diagram">
+      <svg viewBox="0 0 980 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#4d6b00"/>
+          </marker>
+          <marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#5f5b4f"/>
+          </marker>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="980" height="380" fill="url(#grid)"/>
+
+        <!-- workspace split background -->
+        <rect x="240" y="50" width="200" height="290" fill="rgba(31,90,120,0.04)" stroke="rgba(31,90,120,0.15)" stroke-dasharray="2 4"/>
+        <text x="340" y="40" text-anchor="middle" fill="#1f5a78" font-family="JetBrains Mono" font-size="9" letter-spacing="3">USER WORKSPACE</text>
+
+        <rect x="460" y="50" width="240" height="290" fill="rgba(184,40,26,0.03)" stroke="rgba(184,40,26,0.15)" stroke-dasharray="2 4"/>
+        <text x="580" y="40" text-anchor="middle" fill="#b8281a" font-family="JetBrains Mono" font-size="9" letter-spacing="3">ADMIN WORKSPACE</text>
+
+        <!-- declared rules box -->
+        <g>
+          <rect x="20" y="120" width="160" height="120" fill="#ebe5d3" stroke="#4d6b00" stroke-width="1.5"/>
+          <text x="100" y="148" text-anchor="middle" fill="#4d6b00" font-family="JetBrains Mono" font-size="10" letter-spacing="2">DECLARED</text>
+          <text x="100" y="178" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="20" font-style="italic">rules_repo</text>
+          <text x="100" y="200" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">grant_rules</text>
+          <text x="100" y="216" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">memberships</text>
+        </g>
+
+        <!-- live state box -->
+        <g>
+          <rect x="20" y="20" width="160" height="80" fill="#ebe5d3" stroke="#5f5b4f" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="100" y="46" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10" letter-spacing="2">LIVE STATE</text>
+          <text x="100" y="76" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="18" font-style="italic">unity catalog</text>
+        </g>
+
+        <!-- snapshot job -->
+        <g>
+          <rect x="260" y="80" width="160" height="100" fill="#ebe5d3" stroke="#c5beab"/>
+          <text x="340" y="108" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10" letter-spacing="2">JOB</text>
+          <text x="340" y="138" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="22" font-style="italic">snapshot</text>
+          <text x="340" y="162" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">scan + diff</text>
+        </g>
+
+        <!-- plan table -->
+        <g>
+          <rect x="260" y="210" width="160" height="120" fill="#ebe5d3" stroke="#c5beab"/>
+          <text x="340" y="238" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10" letter-spacing="2">DIFF</text>
+          <text x="340" y="268" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="22" font-style="italic">plan</text>
+          <text x="340" y="292" text-anchor="middle" fill="#4d6b00" font-family="JetBrains Mono" font-size="9">TO_GRANT</text>
+          <text x="340" y="306" text-anchor="middle" fill="#b8281a" font-family="JetBrains Mono" font-size="9">TO_REVOKE</text>
+        </g>
+
+        <!-- review UI -->
+        <g>
+          <rect x="480" y="80" width="160" height="100" fill="#ebe5d3" stroke="#c5beab"/>
+          <text x="560" y="108" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10" letter-spacing="2">HUMAN</text>
+          <text x="560" y="138" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="22" font-style="italic">review UI</text>
+          <text x="560" y="162" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">react app</text>
+        </g>
+
+        <!-- apply runner -->
+        <g>
+          <rect x="480" y="210" width="160" height="120" fill="#ebe5d3" stroke="#4d6b00" stroke-width="1.5"/>
+          <text x="560" y="238" text-anchor="middle" fill="#4d6b00" font-family="JetBrains Mono" font-size="10" letter-spacing="2">EXEC</text>
+          <text x="560" y="268" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="22" font-style="italic">apply</text>
+          <text x="560" y="292" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">via SDK</text>
+          <text x="560" y="308" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">SP runner</text>
+        </g>
+
+        <!-- audit log -->
+        <g>
+          <rect x="760" y="140" width="180" height="100" fill="#ebe5d3" stroke="#b8281a"/>
+          <text x="850" y="168" text-anchor="middle" fill="#b8281a" font-family="JetBrains Mono" font-size="10" letter-spacing="2">FORENSICS</text>
+          <text x="850" y="198" text-anchor="middle" fill="#1a1a14" font-family="Instrument Serif" font-size="22" font-style="italic">audit_log</text>
+          <text x="850" y="222" text-anchor="middle" fill="#5f5b4f" font-family="JetBrains Mono" font-size="10">who / what / when</text>
+        </g>
+
+        <!-- arrows -->
+        <path d="M 180 60 C 220 60, 240 100, 260 120" stroke="#5f5b4f" stroke-width="1.2" fill="none" marker-end="url(#ar2)" stroke-dasharray="3 3"/>
+        <path d="M 180 180 C 210 180, 230 140, 260 130" stroke="#4d6b00" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 340 180 L 340 210" stroke="#4d6b00" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 420 270 L 480 270" stroke="#4d6b00" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 560 210 L 560 180" stroke="#5f5b4f" stroke-width="1.2" fill="none" marker-end="url(#ar2)" stroke-dasharray="3 3"/>
+        <path d="M 640 270 C 700 270, 720 200, 760 190" stroke="#4d6b00" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 640 130 C 700 130, 720 170, 760 180" stroke="#5f5b4f" stroke-width="1.2" fill="none" marker-end="url(#ar2)" stroke-dasharray="3 3"/>
+
+        <text x="220" y="155" fill="#4d6b00" font-family="JetBrains Mono" font-size="9">declared</text>
+        <text x="445" y="260" fill="#4d6b00" font-family="JetBrains Mono" font-size="9">if approved</text>
+        <text x="710" y="225" fill="#b8281a" font-family="JetBrains Mono" font-size="9">log</text>
+      </svg>
+    </div>
+
+    <div class="arch-callout">
+      <b>Two workspaces, one app.</b> Read-only views (memberships browser, audit log, plan diff, AI assistant) live in the user workspace. Mutation paths (apply runner, rule editing, SP impersonation) live in the admin workspace. Two blast radii. One UI shell.
+    </div>
+
+    <div class="arch-legend">
+      <span><i class="dot declared"></i>declared path</span>
+      <span><i class="dot live"></i>live state read</span>
+      <span><i class="dot audit"></i>audit trail</span>
+      <span><i class="dot userws"></i>workspace split</span>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>03 / 09</div>
+    <div>NEXT: 4 FEATURES, ONE MINUTE EACH</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 4 / FEATURE OVERVIEW ========== -->
+<article class="slide intro">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 04 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">04 / WHAT IS IN THE BOX</div>
+    <h2 class="section-title">Four moving parts.<br><em>Each earns its keep.</em></h2>
+
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-num">/ 01</div>
+        <span class="tag-pill live">SHIPPED</span>
+        <h4>Memberships <em>as code</em></h4>
+        <p>Group CRUD with a KNOWN_GROUPS allowlist. Source tracking (yaml, ui, request) and soft-delete so audit can replay any week. Daily sync also lands a personal sandbox schema and uploads/downloads volumes per user.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">/ 02</div>
+        <span class="tag-pill live">SHIPPED</span>
+        <h4>Plan &amp; apply <em>for grants</em></h4>
+        <p>Declared rules diffed against the live catalog. To-grant, to-revoke, in-sync. Apply is gated behind a revoke threshold. Nothing runs blind.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">/ 03</div>
+        <span class="tag-pill live">SHIPPED</span>
+        <h4>Validation <em>that bites</em></h4>
+        <p>Regex compilability, principal existence in workspace, privilege-to-object-type rejection, allowlist enforcement. Bad rules never reach the engine.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">/ 04</div>
+        <span class="tag-pill beta">PILOT</span>
+        <h4>AI assistant <em>in chat</em></h4>
+        <p>Q&amp;A about how the app works, how to write rules, why a plan looks the way it does. Roadmap: an agent that drafts rules for you. (yes, that part).</p>
+      </div>
+    </div>
+
+    <p class="section-caption" style="margin-top: 30px;">
+      Next four slides: one feature each. Real-ish mockups. Names sanitized.
+    </p>
+  </div>
+
+  <div class="slide-foot">
+    <div>04 / 09</div>
+    <div>NEXT: MEMBERSHIPS AS CODE</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 5 / MEMBERSHIPS MOCKUP ========== -->
+<article class="slide memb-slide">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 05 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">05 / FEATURE 01 / MEMBERSHIPS</div>
+    <h2 class="section-title">Groups, <em>tracked.</em></h2>
+    <p class="section-caption">One form. One allowlist. One source of truth. Soft-delete because revocation is also a record. Daily sync also reads this table and lands a personal sandbox schema (plus uploads and downloads volumes) for every onboarded user.</p>
+
+    <div class="app-window">
+      <div class="app-chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="crumb">
+          <span>access-manager</span>
+          <span style="color: var(--text-faint)">/</span>
+          <b>memberships</b>
+        </div>
+        <div class="ws-tag">USER WS</div>
+      </div>
+
+      <div class="memb-split">
+        <div class="memb-form">
+          <h5>ADD MEMBERSHIP</h5>
+
+          <div class="field ok">
+            <label>EMAIL</label>
+            <input class="input" value="hieu.tran@example.io" readonly>
+            <div class="hint ok">format ok &middot; user exists in workspace</div>
+          </div>
+
+          <div class="field ok">
+            <label>GROUP</label>
+            <input class="select" value="grp_analytics_read" readonly>
+            <div class="hint ok">matches KNOWN_GROUPS allowlist</div>
+          </div>
+
+          <div class="field">
+            <label>SOURCE</label>
+            <input class="select" value="bgs_ui" readonly>
+            <div class="hint">recorded for audit trail</div>
+          </div>
+
+          <div class="check-line"><span class="tick">v</span>signed off by @you</div>
+          <div class="check-line"><span class="tick">v</span>4 of 4 checks passed</div>
+
+          <div class="submit-row">
+            <button class="btn">CANCEL</button>
+            <button class="btn primary">ADD</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="app-toolbar">
+            <div class="filters">
+              <button class="pill active">ACTIVE 142</button>
+              <button class="pill">ARCHIVED 38</button>
+              <button class="pill">DRIFT 0</button>
+            </div>
+            <div class="summary"><b>78 YAML</b> / 51 UI / 13 REQ</div>
+          </div>
+          <table class="memb">
+            <colgroup>
+              <col style="width: 105px">
+              <col style="width: 175px">
+              <col>
+              <col style="width: 78px">
+              <col style="width: 90px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>STATE</th>
+                <th>MEMBER</th>
+                <th>GROUP</th>
+                <th>SOURCE</th>
+                <th>UPDATED</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="status-tag active">ACTIVE</span></td>
+                <td><div class="email-cell"><span class="avatar">HT</span>hieu.t***@example.io</div></td>
+                <td><span class="principal">grp_analytics_read</span></td>
+                <td><span class="src-tag ui">UI</span></td>
+                <td><span class="principal">2 min ago</span></td>
+              </tr>
+              <tr>
+                <td><span class="status-tag active">ACTIVE</span></td>
+                <td><div class="email-cell"><span class="avatar">MN</span>my.n***@example.io</div></td>
+                <td><span class="principal">grp_data_engineers</span></td>
+                <td><span class="src-tag yaml">YAML</span></td>
+                <td><span class="principal">3d ago</span></td>
+              </tr>
+              <tr>
+                <td><span class="status-tag active">ACTIVE</span></td>
+                <td><div class="email-cell"><span class="avatar">DA</span>dat.a***@example.io</div></td>
+                <td><span class="principal">grp_business_intel</span></td>
+                <td><span class="src-tag req">REQ</span></td>
+                <td><span class="principal">5d ago</span></td>
+              </tr>
+              <tr>
+                <td><span class="status-tag soft-del">ARCHIVED</span></td>
+                <td><div class="email-cell"><span class="avatar">LK</span>linh.k***@example.io</div></td>
+                <td><span class="principal">grp_legacy_etl</span></td>
+                <td><span class="src-tag yaml">YAML</span></td>
+                <td><span class="principal">14d ago</span></td>
+              </tr>
+              <tr>
+                <td><span class="status-tag active">ACTIVE</span></td>
+                <td><div class="email-cell"><span class="avatar">QV</span>quan.v***@example.io</div></td>
+                <td><span class="principal">grp_platform_admin</span></td>
+                <td><span class="src-tag yaml">YAML</span></td>
+                <td><span class="principal">21d ago</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="app-footer">
+            <div>SHOWING 5 OF 142 &nbsp;//&nbsp; ALLOWLIST: <b style="color: var(--accent)">63 groups</b></div>
+            <div class="actions">
+              <button class="btn">EXPORT YAML</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>05 / 09</div>
+    <div>NEXT: PLAN &amp; APPLY</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 6 / PLAN & APPLY ========== -->
+<article class="slide mockup">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 06 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">06 / FEATURE 02 / PLAN &amp; APPLY</div>
+    <h2 class="section-title">Diff first, <em>apply second.</em></h2>
+    <p class="section-caption">Same loop as Terraform. Nothing runs without a human reading the plan.</p>
+
+    <div class="app-window">
+      <div class="app-chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="crumb">
+          <span>access-manager</span>
+          <span style="color: var(--text-faint)">/</span>
+          <span>catalog_demo</span>
+          <span style="color: var(--text-faint)">/</span>
+          <b>plan&nbsp;//&nbsp;run 2026-05-26-0941</b>
+        </div>
+        <div class="ws-tag admin">ADMIN WS</div>
+      </div>
+
+      <div class="app-toolbar">
+        <div class="filters">
+          <button class="pill active">ALL 18</button>
+          <button class="pill">TO_GRANT 9</button>
+          <button class="pill">TO_REVOKE 5</button>
+          <button class="pill">IN_SYNC 4</button>
+        </div>
+        <div class="summary">
+          REVOKE THRESHOLD <b>50</b> &nbsp;//&nbsp; NET DELTA <b>+4</b>
+        </div>
+      </div>
+
+      <table class="plan">
+        <thead>
+          <tr>
+            <th>STATUS</th>
+            <th>OBJECT</th>
+            <th>PRIVILEGE</th>
+            <th>PRINCIPAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="status-tag grant">TO GRANT</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.silver.</span>fact_transactions</span></td>
+            <td><span class="priv">SELECT</span></td>
+            <td><span class="principal">grp_analytics_read</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag grant">TO GRANT</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.silver.</span>dim_customer_masked</span></td>
+            <td><span class="priv">SELECT</span></td>
+            <td><span class="principal">grp_analytics_read</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag grant">TO GRANT</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.</span>gold</span></td>
+            <td><span class="priv">USAGE</span></td>
+            <td><span class="principal">sp_etl_runner_prod</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag revoke">TO REVOKE</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.bronze.</span>raw_events_v1</span></td>
+            <td><span class="priv">ALL PRIVILEGES</span></td>
+            <td><span class="principal">grp_legacy_etl_writers</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag revoke">TO REVOKE</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.bronze.</span>raw_events_v1</span></td>
+            <td><span class="priv">MODIFY</span></td>
+            <td><span class="principal">sp_legacy_loader_2021</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag sync">IN SYNC</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.</span>silver</span></td>
+            <td><span class="priv">USAGE</span></td>
+            <td><span class="principal">grp_data_engineers</span></td>
+          </tr>
+          <tr>
+            <td><span class="status-tag sync">IN SYNC</span></td>
+            <td><span class="obj"><span class="ns">catalog_demo.gold.</span>vw_kpi_daily</span></td>
+            <td><span class="priv">SELECT</span></td>
+            <td><span class="principal">grp_business_intel</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="app-footer">
+        <div>SHOWING 7 OF 18 &nbsp;//&nbsp; SIGNED OFF BY <b style="color: var(--text)">@you</b></div>
+        <div class="actions">
+          <button class="btn">EXPORT JSON</button>
+          <button class="btn primary">APPROVE PLAN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>06 / 09</div>
+    <div>NEXT: VALIDATION</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 7 / VALIDATION ========== -->
+<article class="slide valid">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 07 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">07 / FEATURE 03 / VALIDATION</div>
+    <h2 class="section-title">Bad rules<br><em>never get in.</em></h2>
+    <p class="section-caption">Eight checks per rule, before it touches the engine. Inline. Real-time. Boring on purpose.</p>
+
+    <div class="app-window valid-window">
+      <div class="app-chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="crumb">
+          <span>access-manager</span>
+          <span style="color: var(--text-faint)">/</span>
+          <span>rules</span>
+          <span style="color: var(--text-faint)">/</span>
+          <b>new rule</b>
+        </div>
+        <div class="ws-tag admin">ADMIN WS</div>
+      </div>
+
+      <div class="valid-header">
+        <div>RULE ID <b style="color: var(--text)">grant_001_analytics_silver</b></div>
+        <div class="valid-counter">
+          <span class="pass">5 PASS</span>
+          <span class="warn">2 WARN</span>
+          <span class="err">1 ERROR</span>
+        </div>
+      </div>
+
+      <div class="valid-split">
+        <div class="rule-body">
+          <div class="field ok">
+            <label>PRINCIPAL TYPE</label>
+            <input class="select" value="GROUP" readonly>
+          </div>
+          <div class="field warn">
+            <label>PRINCIPAL</label>
+            <input class="input" value="grp_analytics_read_v2" readonly>
+          </div>
+          <div class="field ok">
+            <label>OBJECT TYPE</label>
+            <input class="select" value="SCHEMA" readonly>
+          </div>
+          <div class="field warn">
+            <label>OBJECT PATTERN</label>
+            <input class="input" value="catalog_demo\.silv[er.*" readonly>
+          </div>
+          <div class="field ok">
+            <label>PRIVILEGE</label>
+            <input class="input" value="SELECT" readonly>
+          </div>
+          <div class="field warn">
+            <label>SCOPE</label>
+            <input class="input" value="all_objects_recursive" readonly>
+          </div>
+        </div>
+
+        <div class="validation-list">
+          <h5>VALIDATION CHECKS &nbsp;//&nbsp; 8 TOTAL</h5>
+          <div class="check pass">
+            <span class="ico">v</span>
+            <span class="msg"><span class="field-name">principal_type</span> &middot; <em>GROUP recognized</em></span>
+            <span class="tag-mini">001</span>
+          </div>
+          <div class="check pass">
+            <span class="ico">v</span>
+            <span class="msg"><span class="field-name">object_type</span> &middot; <em>SCHEMA valid</em></span>
+            <span class="tag-mini">002</span>
+          </div>
+          <div class="check pass">
+            <span class="ico">v</span>
+            <span class="msg"><span class="field-name">privilege x object</span> &middot; <em>SELECT on SCHEMA ok</em></span>
+            <span class="tag-mini">003</span>
+          </div>
+          <div class="check err">
+            <span class="ico">x</span>
+            <span class="msg"><span class="field-name">object_pattern</span> &middot; <em>regex fails to compile, unmatched bracket at pos 22</em></span>
+            <span class="tag-mini">004</span>
+          </div>
+          <div class="check warn">
+            <span class="ico">!</span>
+            <span class="msg"><span class="field-name">principal</span> &middot; <em>in allowlist but group has <b>0 active members</b></em></span>
+            <span class="tag-mini">005</span>
+          </div>
+          <div class="check warn">
+            <span class="ico">!</span>
+            <span class="msg"><span class="field-name">scope</span> &middot; <em>recursive, would affect <b>312 objects</b></em></span>
+            <span class="tag-mini">006</span>
+          </div>
+          <div class="check pass">
+            <span class="ico">v</span>
+            <span class="msg"><span class="field-name">rule_id uniqueness</span> &middot; <em>not in grant_rules</em></span>
+            <span class="tag-mini">007</span>
+          </div>
+          <div class="check pass">
+            <span class="ico">v</span>
+            <span class="msg"><span class="field-name">deprecation_status</span> &middot; <em>no overlap with deprecated ids</em></span>
+            <span class="tag-mini">008</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-footer">
+        <div>FIX THE ERROR TO ENABLE SAVE</div>
+        <div class="actions">
+          <button class="btn">EXPLAIN WITH AI</button>
+          <button class="btn primary" style="opacity: 0.4; cursor: not-allowed;">SAVE RULE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>07 / 09</div>
+    <div>NEXT: AI ASSISTANT</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 8 / AI ASSISTANT ========== -->
+<article class="slide chat-app">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 08 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">08 / FEATURE 04 / AI ASSISTANT</div>
+    <h2 class="section-title">The chat <em>that explains itself.</em></h2>
+    <p class="section-caption">Today: Q&amp;A about the app, the rules, the validation errors. Roadmap: paste 100 schemas, get rules back.</p>
+
+    <div class="app-window">
+      <div class="app-chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="crumb">
+          <span>access-manager</span>
+          <span style="color: var(--text-faint)">/</span>
+          <b>assistant</b>
+        </div>
+        <div class="ws-tag">USER WS</div>
+      </div>
+
+      <div class="chat-body">
+
+        <div class="chat-msg user">
+          <span class="who">YOU</span>
+          <div class="bubble">
+            <div class="label">USER</div>
+            How do I grant <code>SELECT</code> on the <code>silver</code> schema to <code>grp_analytics_read</code>? Do I need to do anything else for the underlying tables?
+          </div>
+        </div>
+
+        <div class="chat-msg ai">
+          <span class="who">AI</span>
+          <div class="bubble">
+            <div class="label">ASSISTANT</div>
+            Three steps. The catalog and schema USAGE come first, then the SELECT cascades:
+            <ol>
+              <li><b>Catalog usage.</b> Grant <code>USAGE ON CATALOG catalog_demo</code> to the group. Without this the group cannot see the catalog exists.</li>
+              <li><b>Schema usage.</b> Grant <code>USAGE ON SCHEMA catalog_demo.silver</code>. This is the door, not the read access.</li>
+              <li><b>Select on schema.</b> Grant <code>SELECT ON SCHEMA catalog_demo.silver</code>. This cascades to existing tables and views. Future tables created in this schema inherit the grant.</li>
+            </ol>
+            One thing to remember: <code>SELECT</code> on schema does not give access to <code>EXTERNAL VOLUMES</code> inside that schema. If the schema has external volumes the group needs to read, grant <code>READ VOLUME</code> separately.
+            <div class="footer-row">
+              <span class="src">sources: <b>internal docs</b> &middot; <b>UC reference</b></span>
+              <span>response time: 1.8s</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="agent-teaser">
+        <div><b>Coming soon.</b> <em>agent mode</em>. paste a spreadsheet of schemas and principals. get a clean rule set back, validated, ready for plan.</div>
+        <span class="badge">JOIN BETA</span>
+      </div>
+
+      <div class="chat-input">
+        <div class="input-fake">ask anything about your access model...</div>
+        <button class="btn primary">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>08 / 09</div>
+    <div>NEXT: THE TIME I ALMOST WIPED PROD</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 9 / MISTAKE ========== -->
+<article class="slide mistake">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 09 / 09</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">09 / THE MISTAKE</div>
+    <h2 class="title">847 revokes,<br><em>one click away.</em></h2>
+
+    <div class="mistake-body">
+      <div>
+        <p class="story">
+          First end-to-end run. The plan came back clean. I clicked apply. <em>The runner asked me, in plain mono, if I was sure I wanted to revoke 847 grants.</em>
+        </p>
+        <p class="story-tail">
+          A rule had been mis-scoped. The reconciler interpreted "no match" as "strip everything". The runner did not. The runner had a safety gate. Whoever built that gate, thank you, that was me, six weeks earlier, three coffees in, writing a TODO that I almost deleted.
+          <br><br>
+          The lessons I took from this are next, and last. Three of them. Charged at full price.
+        </p>
+      </div>
+
+      <div class="danger-modal">
+        <div class="modal-head">
+          <div><span class="icon"><span>!</span></span>APPLY GATE TRIGGERED</div>
+          <time>2026-04-02 / 14:08:23</time>
+        </div>
+
+        <div class="modal-stat">
+          <div class="figure"><em>847</em></div>
+          <div class="figure-sub">
+            REVOKE OPERATIONS PENDING <br>
+            <b>EXCEEDS</b> THRESHOLD OF 50 BY <b>16.9x</b>
+          </div>
+        </div>
+
+        <div class="modal-rows">
+          <div class="row"><span>affected principals</span><b>132</b></div>
+          <div class="row"><span>affected objects</span><b>2,403</b></div>
+          <div class="row"><span>likely cause</span><span class="warn">rule scope drift</span></div>
+          <div class="row"><span>recommendation</span><span class="warn">re-plan, do not apply</span></div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-cancel">CANCEL &amp; RE-PLAN</button>
+          <button class="btn-confirm">CONFIRM REVOKE</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-list" style="margin-top: 30px;">
+      <div class="lesson">
+        <div class="num">01</div>
+        <div class="body">
+          <h3>Validation is <em>the product.</em></h3>
+          <p>Permissions work is not about the SQL you emit. It is about the rules you refuse to let in. The validator ended up the same size as the engine. It earned that.</p>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="num">02</div>
+        <div class="body">
+          <h3>Memberships and grants are <em>different domains.</em></h3>
+          <p>Coupled them in v0 because they "felt similar". They are not. Different state machines. Different audit cadence. Split them early or pay later.</p>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="num">03</div>
+        <div class="body">
+          <h3>Build the revoke gate <em>on day one.</em></h3>
+          <p>Twenty lines of code. One config knob. The cost of not having it is your name in a post-mortem. Future you will say thank you.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="slide-foot">
+    <div>09 / 09 &nbsp;//&nbsp; END</div>
+    <div>BUILT &amp; BROKEN BY ME / 2026</div>
+  </div>
+</article>
+
+<!-- ========== POST BODY TEXT ========== -->
+<div class="post-body">
+  <h2>// LINKEDIN POST BODY (copy paste this above the carousel)</h2>
+
+  <p class="lead">
+    It has been a few months since I started building a <strong>Databricks app</strong> to manage our <strong>Unity Catalog</strong> access, and I wanted to take a moment to share a few reflections from the experience.
+  </p>
+
+  <p>
+    Before this Databricks app existed, the way our team handled access was held together by a Confluence page, a long-running spreadsheet, and a lot of Slack search. Whenever someone asked who had access to a given schema, the honest answer involved scrolling through old tickets. Onboarding 12 service principals to a new catalog could take 2 engineering days. It worked in a way, but it did not scale and it did not give anyone much confidence.
+  </p>
+
+  <p>
+    The idea behind the Databricks app was simple. Treat access rules as code, let the app figure out what to change, and stop pasting GRANT statements directly into notebooks. The plan/apply flow turned out to be the easy part. What I underestimated was how much of the work would go into validation, into making sure a typo in a regex could not quietly drop SELECT on a production catalog, and into bulk operations so nobody has to add 47 schemas one by one.
+  </p>
+
+  <p>
+    The biggest surprise for me was <strong>memberships</strong>. I had been thinking of grants as the source of truth, but the longer I worked on the Databricks app, the more I realised that Unity Catalog groups are actually the truth, and grants only mirror them. If group membership drifts, everything downstream drifts with it.
+  </p>
+
+  <p>
+    Once that seed table existed, the rest fell into place. Each onboarded user also gets a personal sandbox schema with their own <strong>uploads</strong> and <strong>downloads</strong> volumes, provisioned by a daily sync that reads from the same source of truth. One YAML, and three things land in the right place without anyone filing a ticket.
+  </p>
+
+  <p>
+    What I value most from this Databricks app project is not the code itself. It is the conversations with security and governance colleagues that shaped the validation layer, the user feedback that pushed me to add a small Q&amp;A assistant inside the app for the "Tell me which groups currently Im on or List out all the schema in a catalog that I have permission to select" questions, and the mistake (it is in the carousel) that taught me to build safety gates on day one and not after.
+  </p>
+
+  <p>
+    A lot of the early shape of this Databricks app came out of conversations with my mentor, <strong>Khôi Nguyễn</strong> and <strong>Khánh Ngô</strong>. The plan/apply framing in particular was something they pushed me to think about properly before I started writing code. Thank you for the time and the honest feedback along the way.
+  </p>
+
+  <p>
+    If you have built something like this on Databricks, I would love to hear what your validation layer looks like, and what your reconciler has ever proposed to you that scared you a little. I collect those.
+  </p>
+
+  <p class="tags">
+    <span>#Databricks</span> &nbsp; <span>#UnityCatalog</span> &nbsp; <span>#DataEngineering</span> &nbsp; <span>#DataGovernance</span> &nbsp; <span>#BuildInPublic</span>
+  </p>
+</div>
+
+</body>
+</html>

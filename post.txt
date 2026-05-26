@@ -1,0 +1,17 @@
+It has been a few months since I started building a Databricks app to manage our Unity Catalog access, and I wanted to take a moment to share a few reflections from the experience.
+
+Before this Databricks app existed, the way our team handled access was held together by a Confluence page, a long-running spreadsheet, and a lot of Slack search. Whenever someone asked who had access to a given schema, the honest answer involved scrolling through old tickets. Onboarding 12 service principals to a new catalog could take 2 engineering days. It worked in a way, but it did not scale and it did not give anyone much confidence.
+
+The idea behind the Databricks app was simple. Treat access rules as code, let the app figure out what to change, and stop pasting GRANT statements directly into notebooks. The plan/apply flow turned out to be the easy part. What I underestimated was how much of the work would go into validation, into making sure a typo in a regex could not quietly drop SELECT on a production catalog, and into bulk operations so nobody has to add 47 schemas one by one.
+
+The biggest surprise for me was memberships. I had been thinking of grants as the source of truth, but the longer I worked on the Databricks app, the more I realised that Unity Catalog groups are actually the truth, and grants only mirror them. If group membership drifts, everything downstream drifts with it.
+
+Once that seed table existed, the rest fell into place. Each onboarded user also gets a personal sandbox schema with their own uploads and downloads volumes, provisioned by a daily sync that reads from the same source of truth. One YAML, and three things land in the right place without anyone filing a ticket.
+
+What I value most from this Databricks app project is not the code itself. It is the conversations with security and governance colleagues that shaped the validation layer, the user feedback that pushed me to add a small Q&A assistant inside the app for the "Tell me which groups currently Im on or List out all the schema in a catalog that I have permission to select" questions, and the mistake (it is in the carousel) that taught me to build safety gates on day one and not after.
+
+A lot of the early shape of this Databricks app came out of conversations with my mentor, Khôi Nguyễn and Khánh Ngô. The plan/apply framing in particular was something they pushed me to think about properly before I started writing code. Thank you for the time and the honest feedback along the way.
+
+If you have built something like this on Databricks, I would love to hear what your validation layer looks like, and what your reconciler has ever proposed to you that scared you a little. I collect those.
+
+#Databricks #UnityCatalog #DataEngineering #DataGovernance #BuildInPublic
