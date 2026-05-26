@@ -716,7 +716,218 @@
   }
 
   /* ============================================ */
-  /* Slide 6 - Validation                         */
+  /* Slide 6 - Client portal / NewRequest wizard  */
+  /* ============================================ */
+  .portal-shell {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) 250px;
+    gap: 0;
+    background: var(--surface);
+  }
+  .portal-nav {
+    padding: 20px 0;
+    border-right: 1px solid var(--line);
+    background: var(--elevated);
+  }
+  .portal-nav h6 {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 500;
+    padding: 0 18px 10px;
+    margin: 0;
+  }
+  .portal-nav-item {
+    padding: 9px 18px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    border-left: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .portal-nav-item .ico-sq {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0;
+  }
+  .portal-nav-item.active {
+    background: var(--bg);
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+  .portal-nav-item.active .ico-sq { color: var(--accent); }
+  .portal-nav-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 14px 0;
+  }
+
+  .portal-main {
+    padding: 22px 26px;
+  }
+  .portal-main .step-kicker {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+  .portal-main .step-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .wizard-steps {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .wizard-steps .step {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wizard-steps .step .pip {
+    width: 18px; height: 18px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 9px;
+    color: var(--text-faint);
+  }
+  .wizard-steps .step.active .pip {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .wizard-steps .step.active { color: var(--accent); }
+  .wizard-steps .sep {
+    width: 14px; height: 1px;
+    background: var(--line);
+  }
+
+  .req-types {
+    display: grid;
+    gap: 9px;
+  }
+  .req-type {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--bg);
+  }
+  .req-type.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .req-type .ico {
+    width: 26px; height: 26px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .req-type.active .ico {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .req-type .rt-body { flex: 1; min-width: 0; }
+  .req-type .rt-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text);
+    flex-wrap: wrap;
+  }
+  .req-type .rt-label .badge {
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .req-type .rt-label .badge.rec {
+    background: rgba(77,107,0,0.15);
+    color: var(--accent);
+  }
+  .req-type .rt-label .badge.warn {
+    background: rgba(178,120,0,0.15);
+    color: var(--caution);
+  }
+  .req-type .rt-hint {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+
+  .portal-preview {
+    background: var(--elevated);
+    border-left: 1px solid var(--line);
+    padding: 22px 18px;
+  }
+  .portal-preview h6 {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 500;
+    margin: 0 0 12px;
+  }
+  .portal-preview .yaml {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 12px 13px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.85;
+    color: var(--text);
+  }
+  .portal-preview .yaml .k { color: var(--text-dim); }
+  .portal-preview .yaml .ac { color: var(--accent); }
+  .portal-preview .note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.02em;
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  /* ============================================ */
+  /* Slide 7 - Validation                         */
   /* ============================================ */
   .valid-window .valid-header {
     padding: 18px 22px;
@@ -1329,7 +1540,7 @@
 <article class="slide cover">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 01 / 09</div>
+    <div>SLIDE 01 / 10</div>
   </div>
 
   <div class="slide-body">
@@ -1343,7 +1554,7 @@
 
     <div>
       <p class="deck">
-        <strong>Nine slides.</strong> The pain, the app, four features, one mistake big enough to teach me how to ship safety gates. <br><br>
+        <strong>Ten slides.</strong> The pain, the app, the front door, four features, one mistake big enough to teach me how to ship safety gates. <br><br>
         Manual GRANTs do not scale. Spreadsheets are not audit trails. So I built a Databricks app for the job. Swipe.
       </p>
       <div class="deck-rule"></div>
@@ -1363,7 +1574,7 @@
 <article class="slide setup">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 02 / 09</div>
+    <div>SLIDE 02 / 10</div>
   </div>
 
   <div class="slide-body">
@@ -1405,7 +1616,7 @@
   </div>
 
   <div class="slide-foot">
-    <div>02 / 09</div>
+    <div>02 / 10</div>
     <div>NEXT: THE LOOP THAT REPLACED IT</div>
   </div>
 </article>
@@ -1414,14 +1625,14 @@
 <article class="slide arch">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 03 / 09</div>
+    <div>SLIDE 03 / 10</div>
   </div>
 
   <div class="slide-body">
     <div class="section-label">03 / ARCHITECTURE</div>
     <h2 class="section-title">Plan, <em>then apply.</em></h2>
     <p class="section-caption">
-      Same loop as Terraform. Different blast radius. Declared rules live in a table. A snapshot job walks the live catalog. The diff lands in a review UI. Apply only runs after a human looks at the plan.
+      Same loop as Terraform. Different blast radius. End users get a self-service portal in the user workspace (discover, my access, request through a wizard). Admins get the reconciler and the apply gates in the admin workspace. One source of truth in between.
     </p>
 
     <div class="arch-diagram">
@@ -1520,7 +1731,7 @@
     </div>
 
     <div class="arch-callout">
-      <b>Two workspaces, one app.</b> Read-only views (memberships browser, audit log, plan diff, AI assistant) live in the user workspace. Mutation paths (apply runner, rule editing, SP impersonation) live in the admin workspace. Two blast radii. One UI shell.
+      <b>Two workspaces, one app.</b> The user workspace is the front door: discover catalogs, see your own access, submit a request through a wizard, ask the bot. The admin workspace is the back room: rule editing, plan and apply, SP impersonation, audit. Two blast radii. One UI shell.
     </div>
 
     <div class="arch-legend">
@@ -1532,7 +1743,7 @@
   </div>
 
   <div class="slide-foot">
-    <div>03 / 09</div>
+    <div>03 / 10</div>
     <div>NEXT: 4 FEATURES, ONE MINUTE EACH</div>
   </div>
 </article>
@@ -1541,7 +1752,7 @@
 <article class="slide intro">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 04 / 09</div>
+    <div>SLIDE 04 / 10</div>
   </div>
 
   <div class="slide-body">
@@ -1581,7 +1792,7 @@
   </div>
 
   <div class="slide-foot">
-    <div>04 / 09</div>
+    <div>04 / 10</div>
     <div>NEXT: MEMBERSHIPS AS CODE</div>
   </div>
 </article>
@@ -1590,7 +1801,7 @@
 <article class="slide memb-slide">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 05 / 09</div>
+    <div>SLIDE 05 / 10</div>
   </div>
 
   <div class="slide-body">
@@ -1716,20 +1927,122 @@
   </div>
 
   <div class="slide-foot">
-    <div>05 / 09</div>
+    <div>05 / 10</div>
+    <div>NEXT: THE FRONT DOOR</div>
+  </div>
+</article>
+
+<!-- ========== SLIDE 6 / CLIENT PORTAL ========== -->
+<article class="slide portal-slide">
+  <div class="slide-head">
+    <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
+    <div>SLIDE 06 / 10</div>
+  </div>
+
+  <div class="slide-body">
+    <div class="section-label">06 / THE FRONT DOOR</div>
+    <h2 class="section-title">Self-service, <em>not Slack.</em></h2>
+    <p class="section-caption">The other half of the app. End users get a portal in the user workspace: discover what catalogs exist, see what they already have, file a request through a wizard. Same source of truth as the admin side. No tickets, no DMs.</p>
+
+    <div class="app-window">
+      <div class="app-chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="crumb">
+          <span>access-manager</span>
+          <span style="color: var(--text-faint)">/</span>
+          <b>new-request</b>
+        </div>
+        <div class="ws-tag">USER WS</div>
+      </div>
+
+      <div class="portal-shell">
+        <div class="portal-nav">
+          <h6>SELF-SERVICE</h6>
+          <div class="portal-nav-item"><span class="ico-sq">[/]</span>Discover</div>
+          <div class="portal-nav-item"><span class="ico-sq">[=]</span>My access</div>
+          <div class="portal-nav-item"><span class="ico-sq">[~]</span>My requests</div>
+          <div class="portal-nav-item active"><span class="ico-sq">[+]</span>New request</div>
+          <div class="portal-nav-divider"></div>
+          <h6>HELP</h6>
+          <div class="portal-nav-item"><span class="ico-sq">[?]</span>Ask the bot</div>
+        </div>
+
+        <div class="portal-main">
+          <div class="step-kicker">STEP 01 / WHAT DO YOU NEED?</div>
+          <div class="step-title">Pick the scope.</div>
+
+          <div class="wizard-steps">
+            <div class="step active"><span class="pip">1</span>Type</div>
+            <div class="sep"></div>
+            <div class="step"><span class="pip">2</span>Details</div>
+            <div class="sep"></div>
+            <div class="step"><span class="pip">3</span>Confirm</div>
+          </div>
+
+          <div class="req-types">
+            <div class="req-type">
+              <div class="ico">G</div>
+              <div class="rt-body">
+                <div class="rt-label">Join a group</div>
+                <div class="rt-hint">Most common. Most access flows through groups.</div>
+              </div>
+            </div>
+            <div class="req-type active">
+              <div class="ico">S</div>
+              <div class="rt-body">
+                <div class="rt-label">Schema-level <span class="badge rec">RECOMMENDED</span></div>
+                <div class="rt-hint">Sweet spot. Fits 95% of cases. Cascades to all tables in the schema.</div>
+              </div>
+            </div>
+            <div class="req-type">
+              <div class="ico">C</div>
+              <div class="rt-body">
+                <div class="rt-label">Catalog-level <span class="badge warn">STRONG JUSTIFICATION</span></div>
+                <div class="rt-hint">Broad. Needs a real reason and a named owner.</div>
+              </div>
+            </div>
+            <div class="req-type">
+              <div class="ico">T</div>
+              <div class="rt-body">
+                <div class="rt-label">Table-level <span class="badge warn">RARELY NEEDED</span></div>
+                <div class="rt-hint">Schema-level usually covers it. Use only if you must.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portal-preview">
+          <h6>// LIVE PREVIEW</h6>
+          <div class="yaml">
+<span class="k">principal:</span> you@example.io<br>
+<span class="k">securable_type:</span> <span class="ac">SCHEMA</span><br>
+<span class="k">securable:</span> silver_bi.customer<br>
+<span class="k">privileges:</span> [SELECT]<br>
+<span class="k">source:</span> portal_request
+          </div>
+          <div class="note">
+            The same YAML the admin side reads. The wizard writes it, the reconciler picks it up on the next plan. One source of truth, two front doors.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <div>06 / 10</div>
     <div>NEXT: PLAN &amp; APPLY</div>
   </div>
 </article>
 
-<!-- ========== SLIDE 6 / PLAN & APPLY ========== -->
+<!-- ========== SLIDE 7 / PLAN & APPLY ========== -->
 <article class="slide mockup">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 06 / 09</div>
+    <div>SLIDE 07 / 10</div>
   </div>
 
   <div class="slide-body">
-    <div class="section-label">06 / FEATURE 02 / PLAN &amp; APPLY</div>
+    <div class="section-label">07 / FEATURE 02 / PLAN &amp; APPLY</div>
     <h2 class="section-title">Diff first, <em>apply second.</em></h2>
     <p class="section-caption">Same loop as Terraform. Nothing runs without a human reading the plan.</p>
 
@@ -1824,20 +2137,20 @@
   </div>
 
   <div class="slide-foot">
-    <div>06 / 09</div>
+    <div>07 / 10</div>
     <div>NEXT: VALIDATION</div>
   </div>
 </article>
 
-<!-- ========== SLIDE 7 / VALIDATION ========== -->
+<!-- ========== SLIDE 8 / VALIDATION ========== -->
 <article class="slide valid">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 07 / 09</div>
+    <div>SLIDE 08 / 10</div>
   </div>
 
   <div class="slide-body">
-    <div class="section-label">07 / FEATURE 03 / VALIDATION</div>
+    <div class="section-label">08 / FEATURE 03 / VALIDATION</div>
     <h2 class="section-title">Bad rules<br><em>never get in.</em></h2>
     <p class="section-caption">Eight checks per rule, before it touches the engine. Inline. Real-time. Boring on purpose.</p>
 
@@ -1947,20 +2260,20 @@
   </div>
 
   <div class="slide-foot">
-    <div>07 / 09</div>
+    <div>08 / 10</div>
     <div>NEXT: AI ASSISTANT</div>
   </div>
 </article>
 
-<!-- ========== SLIDE 8 / AI ASSISTANT ========== -->
+<!-- ========== SLIDE 9 / AI ASSISTANT ========== -->
 <article class="slide chat-app">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 08 / 09</div>
+    <div>SLIDE 09 / 10</div>
   </div>
 
   <div class="slide-body">
-    <div class="section-label">08 / FEATURE 04 / AI ASSISTANT</div>
+    <div class="section-label">09 / FEATURE 04 / AI ASSISTANT</div>
     <h2 class="section-title">The chat <em>that explains itself.</em></h2>
     <p class="section-caption">Today: Q&amp;A about the app, the rules, the validation errors. Roadmap: paste 100 schemas, get rules back.</p>
 
@@ -2018,20 +2331,20 @@
   </div>
 
   <div class="slide-foot">
-    <div>08 / 09</div>
+    <div>09 / 10</div>
     <div>NEXT: THE TIME I ALMOST WIPED PROD</div>
   </div>
 </article>
 
-<!-- ========== SLIDE 9 / MISTAKE ========== -->
+<!-- ========== SLIDE 10 / MISTAKE ========== -->
 <article class="slide mistake">
   <div class="slide-head">
     <div class="brand">FIELD NOTES &nbsp;//&nbsp; NO. 14</div>
-    <div>SLIDE 09 / 09</div>
+    <div>SLIDE 10 / 10</div>
   </div>
 
   <div class="slide-body">
-    <div class="section-label">09 / THE MISTAKE</div>
+    <div class="section-label">10 / THE MISTAKE</div>
     <h2 class="title">847 revokes,<br><em>one click away.</em></h2>
 
     <div class="mistake-body">
@@ -2101,7 +2414,7 @@
   </div>
 
   <div class="slide-foot">
-    <div>09 / 09 &nbsp;//&nbsp; END</div>
+    <div>10 / 10 &nbsp;//&nbsp; END</div>
     <div>BUILT &amp; BROKEN BY ME / 2026</div>
   </div>
 </article>
